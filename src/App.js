@@ -12,7 +12,7 @@ class App extends Component {
     idAddRecipe: 1,
     jumlahBuah: 0,
     materialChoosed: null,
-    editSelected: null,
+    detailSelected: null,
     loading: false, 
     loadingData: false,
     data : [],
@@ -26,7 +26,7 @@ class App extends Component {
     Axios.get(URL_API + '/item/getItem')
     .then((res) => {
       this.setState({
-        data: res.data
+        dataAwal: res.data
       })
     })
     .catch((err) => {
@@ -90,7 +90,19 @@ class App extends Component {
 
     Arr.push(Arr2)
 
-    console.log(Arr)
+    Axios.post(URL_API + '/recipe/postrecipe', Arr)
+    .then((res) => {
+      this.setState({
+        openModal: false, 
+        jumlahBuah: 0
+      })
+    })
+    .catch((err) => {
+      this.setState({
+        openModal: false, 
+        jumlahBuah: 0
+      })
+    })
   }
 
   renderJumlahBuah = () => {
@@ -107,7 +119,7 @@ class App extends Component {
              <select ref={`namaBuah${x}`} className='form-control'>
                 <option value=''>Pilih bahan</option>
                 {
-                  this.state.data.map((val, index) => {
+                  this.state.dataAwal.map((val, index) => {
                     return <option key={index} value={val.id}>{val.material}</option>
                   })
                 }
@@ -131,32 +143,45 @@ class App extends Component {
     )
   }
 
-  renderDataNutrisi = () => {
+  searchRecipe = () => {
+    alert(this.refs.searchName.value)
+    Axios.get(URL_API + '/recipe/searchrecipe/' + this.refs.searchName.value)
+    .then((res) => {
+      this.setState({
+        data: res.data
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  renderRecipe = () => {
     if(this.state.data.length !== 0) {
       let jsx = this.state.data.map((val, index) => {
-        if(this.state.editSelected === val.id) {
-         return (
-           <tr key={index}>
-             <td>
-               {val.id}
-             </td>
-             <td>
-               <input type='select'>
-                 <option></option>
-               </input>
-             </td>
-             <td>
-               <input ref={(beratBuah) => this.beratBuah = beratBuah} type='number' placeholder='Masukkan berat buah' />
-             </td>
-             <td>
-               <input type='button' className='btn btn-success' value='Save' onClick={() => this.EditDataBuah()}/> 
-             </td>
-             <td>
-             <input type='button' className='btn btn-danger' value='Cancel' onClick={() => this.setState({editSelected: null})}/> 
-             </td>
-           </tr>
-         )
-        } 
+        // if(this.state.editSelected === val.id) {
+        //  return (
+        //    <tr key={index}>
+        //      <td>
+        //        {val.id}
+        //      </td>
+        //      <td>
+        //        <input type='select'>
+        //          <option></option>
+        //        </input>
+        //      </td>
+        //      <td>
+        //        <input ref={(beratBuah) => this.beratBuah = beratBuah} type='number' placeholder='Masukkan berat buah' />
+        //      </td>
+        //      <td>
+        //        <input type='button' className='btn btn-success' value='Save' onClick={() => this.EditDataBuah()}/> 
+        //      </td>
+        //      <td>
+        //      <input type='button' className='btn btn-danger' value='Cancel' onClick={() => this.setState({editSelected: null})}/> 
+        //      </td>
+        //    </tr>
+        //  )
+        // } 
         
         return (
          <tr key={index}>
@@ -164,15 +189,10 @@ class App extends Component {
                {val.id}
              </td>
              <td>
-               <input type='select'>
-                 <option></option>
-               </input>
+               {val.recipeName}
              </td>
            <td>
-             <input type='button' className='btn btn-success' value='Ubah Berat Buah' onClick={() => this.setState({editSelected: val.id})}/> 
-           </td>
-           <td>
-           <input type='button' className='btn btn-danger' value='Hapus Buah' onClick={() => this.setState({editSelected: val.id})}/> 
+           <input type='button' className='btn btn-primary' value='Detail Recipe' onClick={() => this.setState({detailSelected: val.id})}/> 
            </td>
          </tr>
        )
@@ -203,17 +223,45 @@ class App extends Component {
               </div>
             </div>
           </div>
+
+          
             {this.renderAddRecipe(this.state.openModal)}
             <div className='container'>
               <div className='col-12'>
                 <input type='button' className='btn btn-secondary form-control mb-3' value='Add New Recipe' onClick={() => this.setState({ openModal: true})}/>
 
-                <input type='text' className='form-control' placeholder='Search Recipe' />
+                <input ref='searchName' type='text' className='form-control' placeholder='Search Recipe' />
+                <Button className='btn btn-success' onClick={this.searchRecipe}>
+                  Search
+                </Button>
               </div>
             </div>
 
-              
+            {
+              this.state.data.length !== 0 ?
+              <div className='container'>
+                <div className='row'>
+                  <div className='col-12'>
+                  <table class="table mt-5">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama Recipe</th>
+                        <th scope='col'>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.renderRecipe()}
 
+                    </tbody>
+                  </table>
+                  </div>
+                </div>
+              </div>
+
+                  :
+                  null
+            }
       </div>
     )
   }
