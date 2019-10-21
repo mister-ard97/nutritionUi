@@ -17,12 +17,14 @@ class App extends Component {
     loadingData: false,
     data : [],
     renderulang : false,
+    renderulang1: false,
 
     openModal: false,
     openModalRecipe: false,
     idRecipeSelected: null,
     titleRecipeSelected: null,
-    detailRecipeItem: []
+    detailRecipeItem: [],
+    
   }
 
   componentDidMount() {
@@ -31,12 +33,21 @@ class App extends Component {
     Axios.get(URL_API + '/item/getItem')
     .then((res) => {
       this.setState({
-        dataAwal: res.data,
-
+        dataAwal: res.data
       })
       console.log(this.state.dataAwal)
     })
     .catch((err) => {
+      console.log(err)
+    })
+
+    Axios.get(URL_API + '/recipe/getrecipe')
+    .then((res)=>{
+      this.setState({
+        data: res.data
+      })
+    })
+    .catch((err)=>{
       console.log(err)
     })
   }
@@ -129,8 +140,10 @@ class App extends Component {
             </thead>
             <tbody>
               {this.renderDetailRecipeItem()}
-
             </tbody>
+            <tfoot>
+              {this.renderTotalResDetail()}
+            </tfoot>
             </table>
           
         </ModalBody>
@@ -169,11 +182,48 @@ class App extends Component {
 
   renderDetailRecipeItem = () => {
     if(this.state.detailRecipeItem.length !== 0) {
+      
       return this.state.detailRecipeItem.map((val, index) => {
+        if(this.state.editRecipeDetail === val.id){
+          return (
+            <tr key={index}> 
+            <td>{val.material}</td>
+            <td>
+            <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gram${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999'/>
+            </td>
+            <td>{`${parseFloat(val.calorie * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.protein * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.totalFat * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.saturated * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.mufa * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.pufa * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.carbohydrat * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.fiber * val.gram).toFixed(2)}`}</td>
+            <td>{`Rp ${numeral(parseFloat(val.price * val.gram).toFixed(2)).format(0,0)}`}</td>
+            <td>
+              <a href={val.source_url} target='_blank' rel='noopener noreferrer'>
+                Link Source
+              </a>
+            </td>
+            <td>
+              <Button className='btn btn-danger' onClick={() => this.setState({editRecipeDetail: null})} >
+                  Cancel
+              </Button>
+            </td>
+            <td>
+              <Button className='btn btn-primary' onClick={() => this.updateGramRecipeDetail(this.state.editRecipeDetail, index)}>
+                  Save
+              </Button>
+            </td>
+          </tr>
+          )
+        }
         return (
           <tr key={index}> 
             <td>{val.material}</td>
-            <td>{val.gram}</td>
+            <td>
+            <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gram${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999' disabled/>
+            </td>
             <td>{`${parseFloat(val.calorie * val.gram).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.protein * val.gram).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.totalFat * val.gram).toFixed(2)}`}</td>
@@ -204,6 +254,23 @@ class App extends Component {
     }
   }
 
+  updateGramRecipeDetail = (id, index) => {
+    Axios.post(URL_API + '/recipe/editRecipeDetailItem/' + id, { data: this.refs[`gram${index}`].value})
+    .then((res) => {
+      alert('Data Berhasil diubah')
+      this.setState({
+        openModalRecipe: false,
+        idRecipeSelected: null,
+        titleRecipeSelected: null,
+        detailRecipeItem: [],
+        editRecipeDetail: null
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
   // renderDataRecipe = (id) => {
   //     if(id) {
        
@@ -219,6 +286,59 @@ class App extends Component {
 // <td>{`${parseFloat(data.carbohydrat).toFixed(2)}`}</td>
 // <td>{`${parseFloat(data.fiber).toFixed(2)}`}</td>
 // <td>{`${parseFloat(data.price).toFixed(2)}`}</td>
+
+renderTotalResDetail = () =>{
+  if(this.state.detailRecipeItem.length > 0 ){
+    var totalweight = 0
+    var totalcalorie = 0
+    var totalprotein = 0
+    var totalFat = 0
+    var totalsaturated = 0
+    var totalmufa = 0
+    var totalpufa = 0
+    var totalcarbohydrat = 0
+    var totalfiber = 0
+    var totalprice = 0
+
+    for(var i = 0 ; i < this.state.detailRecipeItem.length ; i++){
+      if(!this.refs[`gram${i}`]){
+
+      }
+      else {
+        totalweight = parseFloat(totalweight) + parseFloat(this.refs[`gram${i}`].value)
+        totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(this.refs[`gram${i}`].value))
+        totalprotein = parseFloat(totalprotein) + parseFloat(this.state.detailRecipeItem[i].protein * parseFloat(this.refs[`gram${i}`].value))
+        totalFat = parseFloat(totalFat) + parseFloat(this.state.detailRecipeItem[i].totalFat * parseFloat(this.refs[`gram${i}`].value))
+        totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.detailRecipeItem[i].saturated * parseFloat(this.refs[`gram${i}`].value))
+
+        totalmufa = parseFloat(totalmufa) + parseFloat(this.state.detailRecipeItem[i].mufa * parseFloat(this.refs[`gram${i}`].value))
+        totalpufa = parseFloat(totalpufa) + parseFloat(this.state.detailRecipeItem[i].pufa * parseFloat(this.refs[`gram${i}`].value))
+        totalcarbohydrat = parseFloat(totalcarbohydrat) + parseFloat(this.state.detailRecipeItem[i].carbohydrat * parseFloat(this.refs[`gram${i}`].value))
+        totalfiber = parseFloat(totalfiber) + parseFloat(this.state.detailRecipeItem[i].fiber * parseFloat(this.refs[`gram${i}`].value))
+        totalprice = parseFloat(totalprice) + parseFloat(this.state.detailRecipeItem[i].price * parseFloat(this.refs[`gram${i}`].value))
+
+      }
+    }
+    return (
+      <tr>
+        <td></td>
+        <td className="font-weight-bold">Total :  </td>
+        <td className="font-weight-bold text-gray"> {parseFloat(totalweight).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{parseFloat(totalcalorie).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{parseFloat(totalprotein).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{parseFloat(totalFat).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{parseFloat(totalsaturated).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{parseFloat(totalmufa).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{parseFloat(totalpufa).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{parseFloat(totalcarbohydrat).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{parseFloat(totalfiber).toFixed(2)}</td>
+        <td className="font-weight-bold text-gray">{`Rp. `+ numeral(parseFloat(totalprice).toFixed(2)).format(0,0)}</td>
+
+      </tr>
+    )
+  }
+ 
+}
 
   renderTotal = () =>{
     if(this.state.jumlahBuah > 0 ){
@@ -290,19 +410,19 @@ class App extends Component {
     Arr.push(Arr2)
     console.log(Arr)
 
-    // Axios.post(URL_API + '/recipe/postrecipe', Arr)
-    // .then((res) => {
-    //   this.setState({
-    //     openModal: false, 
-    //     jumlahBuah: 0
-    //   })
-    // })
-    // .catch((err) => {
-    //   this.setState({
-    //     openModal: false, 
-    //     jumlahBuah: 0
-    //   })
-    // })
+    Axios.post(URL_API + '/recipe/postrecipe', Arr)
+    .then((res) => {
+      this.setState({
+        openModal: false, 
+        jumlahBuah: 0
+      })
+    })
+    .catch((err) => {
+      this.setState({
+        openModal: false, 
+        jumlahBuah: 0
+      })
+    })
   }
 
   allowPositivesOnly(event) {
@@ -441,13 +561,16 @@ class App extends Component {
         return (
          <tr key={index}>
             <td>
-               {val.id}
+               {index + 1}
              </td>
              <td>
                {val.recipeName}
              </td>
            <td>
            <input type='button' className='btn btn-primary' value='Detail Recipe' onClick={() => this.getDetailRecipeItem(val.id, val.recipeName)}/> 
+           </td>
+           <td>
+           <input type='button' className='btn btn-danger' value='Delete Recipe' onClick={() => this.deleteRecipe(val.id)}/> 
            </td>
          </tr>
        )
@@ -457,6 +580,27 @@ class App extends Component {
        return jsx;
     }
     
+  }
+
+  deleteRecipe = (id) => {
+    let bool = window.confirm(`Apakah anda yakin ingin mneghapus data ini?`)
+    if(bool) {
+      Axios.get(URL_API + '/recipe/deleterecipe/' + id)
+      .then((res) => {
+        Axios.get(URL_API + '/recipe/getrecipe')
+        .then((res)=>{
+          this.setState({
+            data: res.data
+          })
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
   }
 
   getDetailRecipeItem = (id, title) => {
@@ -531,7 +675,7 @@ class App extends Component {
                       <tr>
                         <th scope="col">No</th>
                         <th scope="col">Nama Recipe</th>
-                        <th scope='col'>Action</th>
+                        <th scope='col' colSpan={2}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
