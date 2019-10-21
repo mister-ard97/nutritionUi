@@ -75,8 +75,22 @@ class App extends Component {
   }
 
   saveRecipe = () => {
-    alert(this.NamaRecipe.value)
-    alert(this.refs.NamaBahan0.refs.value)
+    let Arr = [];
+    let Arr2 = []
+    Arr.push(this.NamaRecipe.value)
+
+    for(let i = 0; i < this.state.jumlahBuah; i++) {
+      var data = {
+        itemId: this.refs[`namaBuah${i}`].value, 
+        gram : this.refs[`gram${i}`].value
+      }
+
+      Arr2.push(data)
+    }
+
+    Arr.push(Arr2)
+
+    console.log(Arr)
   }
 
   renderJumlahBuah = () => {
@@ -90,17 +104,17 @@ class App extends Component {
               {x + 1}
             </td>
             <td>
-             <Input type='select' innerRef={`namaBahan${x}`}>
+             <select ref={`namaBuah${x}`} className='form-control'>
                 <option value=''>Pilih bahan</option>
                 {
                   this.state.data.map((val, index) => {
                     return <option key={index} value={val.id}>{val.material}</option>
                   })
                 }
-             </Input>
+             </select>
             </td>   
             <td>
-                <input type='number' className='form-control' placeholder='Masukkan berat buah' />
+                <input type='number' className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`}/>
             </td>
 
         </tr>
