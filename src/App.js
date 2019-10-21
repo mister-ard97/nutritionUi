@@ -112,10 +112,10 @@ class App extends Component {
       var totalcarbohydrat = 0
       var totalfiber = 0
       var totalprice = 0
-      console.log(totalcalorie)
+
       for(var i = 0 ; i<this.state.jumlahBuah ; i++){
         if(!this.refs[`namaBuah${i}`] || !this.refs[`gram${i}`].value ){
-          console.log('masuk')
+  
         }
         else {
           totalweight = parseFloat(totalweight) + parseFloat(this.refs[`gram${i}`].value)
