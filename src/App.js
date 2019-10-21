@@ -28,6 +28,7 @@ class App extends Component {
       this.setState({
         dataAwal: res.data
       })
+      console.log(this.state.dataAwal)
     })
     .catch((err) => {
       console.log(err)
@@ -36,7 +37,7 @@ class App extends Component {
 
   renderAddRecipe = () => {
     return (
-      <Modal isOpen={this.state.openModal} toggle={this.toggle} size='xl'>
+      <Modal isOpen={this.state.openModal} toggle={this.toggle} style={{maxWidth : '1366px'}}>
         <ModalHeader toggle={this.toggle}>Nutrition Calculation</ModalHeader>
         <ModalBody>
         <div className='container'>
@@ -58,6 +59,16 @@ class App extends Component {
                         <th scope="col">No</th>
                         <th scope="col">Material Name</th>
                         <th scope="col">Weight (gram)</th>
+                        <th scope="col">Calorie</th>
+                        <th scope="col">Protein</th>
+                        <th scope="col">TotalFat</th>
+                        <th scope="col">Saturated</th>
+                        <th scope="col">MUFA</th>
+                        <th scope="col">PUFA</th>
+                        <th scope="col">Carbo</th>
+                        <th scope="col">Fiber</th>
+                        <th scope="col">Price</th>
+
                       </tr>
                     </thead>
                     <tbody>
@@ -110,13 +121,17 @@ class App extends Component {
       var Arrjsx = []
 
       for(let x = 0; x < this.state.jumlahBuah; x++) {
+        var data = this.state.dataAwal[x]
+ 
+
           Arrjsx.push(
-            <tr>
+            
+        <tr>
             <td>
               {x + 1}
             </td>
             <td>
-             <select ref={`namaBuah${x}`} className='form-control'>
+             <select ref={`namaBuah${x}`} className='form-control' value=''>
                 <option value=''>Pilih bahan</option>
                 {
                   this.state.dataAwal.map((val, index) => {
@@ -124,10 +139,22 @@ class App extends Component {
                   })
                 }
              </select>
+             {/* {       console.log()} */}
             </td>   
             <td>
-                <input type='number' className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`}/>
+                <input type='number' className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`}  />
             </td>
+            {/* {this.renderNutrisiBuah(this.refs[`namabuah${x}`].value)} */}
+              
+            {/* <td>{this.refs[`namaBuah${x}`].value === '' ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie).toFixed(2)}`}</td> */}
+            {/* <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.protein).toFixed(2)}`}</td>
+            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.totalFat).toFixed(2)}`}</td>
+            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.saturated).toFixed(2)}`}</td>
+            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.mufa).toFixed(2)}`}</td>
+            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.pufa).toFixed(2)}`}</td>
+            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.carbohydrat).toFixed(2)}`}</td>
+            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.fiber).toFixed(2)}`}</td>
+            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.price).toFixed(2)}`}</td> */}
 
         </tr>
           )        
@@ -136,12 +163,36 @@ class App extends Component {
       return Arrjsx;
     }
 
+  
     return (
       <tr col='4'>
           <td>Belum ada data buah</td>
       </tr>
     )
   }
+
+// renderNutrisiBuah = (data) =>{
+//   console.log(data)
+// }
+
+// <td>{`${parseFloat(data.calorie).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.protein).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.totalFat).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.saturated).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.mufa).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.pufa).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.carbohydrat).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.fiber).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.price).toFixed(2)}`}</td>
+  
+
+  // renderNutritionDetails = (data) => {
+  //   return (
+
+
+  //   )
+  // }
+
 
   searchRecipe = () => {
     alert(this.refs.searchName.value)
