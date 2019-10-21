@@ -18,6 +18,9 @@ class App extends Component {
     data : [],
 
     openModal: false,
+    openModalRecipe: false,
+    idReceipt: null,
+    titleRecipeSelected: null,
   }
 
   componentDidMount() {
@@ -72,6 +75,67 @@ class App extends Component {
         </ModalFooter>
       </Modal>
     )
+  }
+
+  renderDetailRecipe = () => {
+    return (
+      <Modal isOpen={this.state.openModalRecipe} toggle={this.toggle} style={{maxWidth: '1366'}}>
+        <ModalHeader toggle={this.toggle}>Nutrition Calculation</ModalHeader>
+        <ModalBody>
+        <div className='container'>
+              <div className='row'>
+                <div className='col-12'>
+                  <h4>{this.state.titleRecipeSelected}</h4>
+                </div>
+              </div>
+          </div>
+
+          <table class="table mt-5">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Material</th>
+                <th scope="col">Weight / gram</th>
+                <th scope='col'>Calorie (kcal)</th>
+                <th scope="col">Protein / gram</th>
+                <th scope="col">Total Fat</th>
+                <th scope='col'>Saturated</th>
+                <th scope="col">MUFA</th>
+                <th scope='col'>PUFA</th>
+                <th scope="col">Carbohydrate</th>
+                <th scope="col">Fiber</th>
+                <th scope='col'>Price</th>
+                <th scope='col'>Source</th>
+              </tr>
+            </thead>
+            <tbody>
+            {this.renderDataRecipe(this.state.idReceipt)}
+
+            </tbody>
+            </table>
+          
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={this.toggle}>Save</Button>{' '}
+          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+    )
+  }
+
+  renderDataRecipe = (id) => {
+      Axios.get(URL_API + '/recipe/getDetailRecipe/' + id)
+      .then((res) => {
+        return res.data.map((val, index) => {
+          return (
+            <tr key={index}>
+                <td></td>
+            </tr>
+          )
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   saveRecipe = () => {
@@ -192,7 +256,7 @@ class App extends Component {
                {val.recipeName}
              </td>
            <td>
-           <input type='button' className='btn btn-primary' value='Detail Recipe' onClick={() => this.setState({detailSelected: val.id})}/> 
+           <input type='button' className='btn btn-primary' value='Detail Recipe' onClick={() => this.setState({openModalRecipe: true, idReciceSelected: val.id, titleRecipeSelected: val.recipeName})}/> 
            </td>
          </tr>
        )
@@ -205,9 +269,18 @@ class App extends Component {
   }
 
   toggle = () => {
-    this.setState({
-      openModal: !this.state.openModal
-    })
+    if(this.state.openModal) {   
+      this.setState({
+        openModal: !this.state.openModal
+      })
+    }
+    if(this.state.openModalRecipe) {
+      this.setState({
+        openModalRecipe: !this.state.openModalRecipe,
+        idReceipt: null,
+        titleRecipeSelected: null
+      })
+    }
   }
 
 
@@ -226,6 +299,7 @@ class App extends Component {
 
           
             {this.renderAddRecipe(this.state.openModal)}
+            {this.renderDetailRecipe(this.state.openModalRecipe)}
             <div className='container'>
               <div className='col-12'>
                 <input type='button' className='btn btn-secondary form-control mb-3' value='Add New Recipe' onClick={() => this.setState({ openModal: true})}/>
