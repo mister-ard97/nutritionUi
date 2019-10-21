@@ -16,6 +16,7 @@ class App extends Component {
     loading: false, 
     loadingData: false,
     data : [],
+    renderulang : false,
 
     openModal: false,
   }
@@ -26,7 +27,8 @@ class App extends Component {
     Axios.get(URL_API + '/item/getItem')
     .then((res) => {
       this.setState({
-        dataAwal: res.data
+        dataAwal: res.data,
+
       })
       console.log(this.state.dataAwal)
     })
@@ -121,7 +123,10 @@ class App extends Component {
       var Arrjsx = []
 
       for(let x = 0; x < this.state.jumlahBuah; x++) {
+ 
         var data = this.state.dataAwal[x]
+        // var {calorie, protein, totalFat, saturated, mufa, pufa, carbohydrat, fiber, price} = data
+    
  
 
           Arrjsx.push(
@@ -131,34 +136,42 @@ class App extends Component {
               {x + 1}
             </td>
             <td>
-             <select ref={`namaBuah${x}`} className='form-control' value=''>
-                <option value=''>Pilih bahan</option>
+             <select ref={`namaBuah${x}`} className='form-control' onChange={()=>this.setState({ renderulang : false})}>
                 {
                   this.state.dataAwal.map((val, index) => {
-                    return <option key={index} value={val.id}>{val.material}</option>
+                    return <option key={index} value={val.id-1}>{val.material}</option>
                   })
                 }
              </select>
-             {/* {       console.log()} */}
+        
             </td>   
             <td>
-                <input type='number' className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`}  />
+                <input type='number' className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`} defaultValue={0} onChange={()=>this.setState({ renderulang : false})}/>
             </td>
             {/* {this.renderNutrisiBuah(this.refs[`namabuah${x}`].value)} */}
-              
-            {/* <td>{this.refs[`namaBuah${x}`].value === '' ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie).toFixed(2)}`}</td> */}
-            {/* <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.protein).toFixed(2)}`}</td>
-            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.totalFat).toFixed(2)}`}</td>
-            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.saturated).toFixed(2)}`}</td>
-            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.mufa).toFixed(2)}`}</td>
-            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.pufa).toFixed(2)}`}</td>
-            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.carbohydrat).toFixed(2)}`}</td>
-            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.fiber).toFixed(2)}`}</td>
-            <td>{`${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie.price).toFixed(2)}`}</td> */}
+  
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].protein * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].totalFat * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].saturated * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].mufa * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].pufa * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].carbohydrat * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].fiber * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].price * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
 
         </tr>
           )        
       }
+
+      // if(!this.state.finishrender){
+
+      //   this.setState({
+      //     finishrender : true
+      //   })
+      // }
+      
+      
 
       return Arrjsx;
     }
