@@ -56,28 +56,31 @@ class App extends Component {
         </div>
 
         <table class="table mt-5">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Material Name</th>
-                        <th scope="col">Weight (gram)</th>
-                        <th scope="col">Calorie</th>
-                        <th scope="col">Protein</th>
-                        <th scope="col">TotalFat</th>
-                        <th scope="col">Saturated</th>
-                        <th scope="col">MUFA</th>
-                        <th scope="col">PUFA</th>
-                        <th scope="col">Carbo</th>
-                        <th scope="col">Fiber</th>
-                        <th scope="col">Price</th>
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Material Name</th>
+              <th scope="col">Weight (gram)</th>
+              <th scope="col">Calorie</th>
+              <th scope="col">Protein</th>
+              <th scope="col">TotalFat</th>
+              <th scope="col">Saturated</th>
+              <th scope="col">MUFA</th>
+              <th scope="col">PUFA</th>
+              <th scope="col">Carbo</th>
+              <th scope="col">Fiber</th>
+              <th scope="col">Price</th>
 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.renderJumlahBuah()}
+            </tr>
+          </thead>
+          <tbody>
+            {this.renderJumlahBuah()}
 
-                    </tbody>
-                  </table>
+          </tbody>
+          <tfoot>
+            {this.renderTotal()}
+          </tfoot>
+        </table>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.saveRecipe}>Save</Button>{' '}
@@ -85,6 +88,69 @@ class App extends Component {
         </ModalFooter>
       </Modal>
     )
+  }
+
+  // <td>{`${parseFloat(data.calorie).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.protein).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.totalFat).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.saturated).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.mufa).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.pufa).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.carbohydrat).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.fiber).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.price).toFixed(2)}`}</td>
+
+  renderTotal = () =>{
+    if(this.state.jumlahBuah > 0 ){
+      var totalweight = 0
+      var totalcalorie = 0
+      var totalprotein = 0
+      var totalFat = 0
+      var totalsaturated = 0
+      var totalmufa = 0
+      var totalpufa = 0
+      var totalcarbohydrat = 0
+      var totalfiber = 0
+      var totalprice = 0
+      console.log(totalcalorie)
+      for(var i = 0 ; i<this.state.jumlahBuah ; i++){
+        if(!this.refs[`namaBuah${i}`] || !this.refs[`gram${i}`].value ){
+          console.log('masuk')
+        }
+        else {
+          totalweight = parseFloat(totalweight) + parseFloat(this.refs[`gram${i}`].value)
+          totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].calorie * parseFloat(this.refs[`gram${i}`].value))
+          totalprotein = parseFloat(totalprotein) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].protein * parseFloat(this.refs[`gram${i}`].value))
+          totalFat = parseFloat(totalFat) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].totalFat * parseFloat(this.refs[`gram${i}`].value))
+          totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].saturated * parseFloat(this.refs[`gram${i}`].value))
+
+          totalmufa = parseFloat(totalmufa) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].mufa * parseFloat(this.refs[`gram${i}`].value))
+          totalpufa = parseFloat(totalpufa) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].pufa * parseFloat(this.refs[`gram${i}`].value))
+          totalcarbohydrat = parseFloat(totalcarbohydrat) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].carbohydrat * parseFloat(this.refs[`gram${i}`].value))
+          totalfiber = parseFloat(totalfiber) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].fiber * parseFloat(this.refs[`gram${i}`].value))
+          totalprice = parseFloat(totalprice) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].price * parseFloat(this.refs[`gram${i}`].value))
+
+        }
+      }
+      return (
+        <tr>
+          <td></td>
+          <td className="font-weight-bold">Total :  </td>
+          <td className="font-weight-bold text-gray"> {parseFloat(totalweight).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{parseFloat(totalcalorie).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{parseFloat(totalprotein).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{parseFloat(totalFat).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{parseFloat(totalsaturated).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{parseFloat(totalmufa).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{parseFloat(totalpufa).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{parseFloat(totalcarbohydrat).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{parseFloat(totalfiber).toFixed(2)}</td>
+          <td className="font-weight-bold text-gray">{`Rp. `+ numeral(parseFloat(totalprice).toFixed(2)).format(0,0)}</td>
+  
+        </tr>
+      )
+    }
+   
   }
 
   saveRecipe = () => {
@@ -95,28 +161,33 @@ class App extends Component {
     for(let i = 0; i < this.state.jumlahBuah; i++) {
       var data = {
         itemId: this.refs[`namaBuah${i}`].value, 
-        gram : this.refs[`gram${i}`].value
+        gram : parseFloat(this.refs[`gram${i}`].value)
       }
 
       Arr2.push(data)
     }
 
     Arr.push(Arr2)
+    console.log(Arr)
 
-    Axios.post(URL_API + '/recipe/postrecipe', Arr)
-    .then((res) => {
-      this.setState({
-        openModal: false, 
-        jumlahBuah: 0
-      })
-    })
-    .catch((err) => {
-      this.setState({
-        openModal: false, 
-        jumlahBuah: 0
-      })
-    })
+    // Axios.post(URL_API + '/recipe/postrecipe', Arr)
+    // .then((res) => {
+    //   this.setState({
+    //     openModal: false, 
+    //     jumlahBuah: 0
+    //   })
+    // })
+    // .catch((err) => {
+    //   this.setState({
+    //     openModal: false, 
+    //     jumlahBuah: 0
+    //   })
+    // })
   }
+
+  allowPositivesOnly(event) {
+    return (event.keyCode? (parseInt(event.keyCode) === 69 ? false : event.keyCode >= 48 && event.keyCode <= 57) : (event.charCode >= 48 && event.charCode <= 57))? true : event.preventDefault();
+}
 
   renderJumlahBuah = () => {
     if(this.state.jumlahBuah !== 0) {
@@ -136,7 +207,8 @@ class App extends Component {
               {x + 1}
             </td>
             <td>
-             <select ref={`namaBuah${x}`} className='form-control' onChange={()=>this.setState({ renderulang : false})}>
+             <select ref={`namaBuah${x}`} className='form-control' onChange={()=>this.setState({ renderulang : true})}>
+              
                 {
                   this.state.dataAwal.map((val, index) => {
                     return <option key={index} value={val.id-1}>{val.material}</option>
@@ -146,7 +218,7 @@ class App extends Component {
         
             </td>   
             <td>
-                <input type='number' className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`} defaultValue={0} onChange={()=>this.setState({ renderulang : false})}/>
+                <input type='number' maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`}  onChange={()=>this.setState({ renderulang : true})} min='1' max='999'/>
             </td>
             {/* {this.renderNutrisiBuah(this.refs[`namabuah${x}`].value)} */}
   
