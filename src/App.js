@@ -20,8 +20,9 @@ class App extends Component {
 
     openModal: false,
     openModalRecipe: false,
-    idReceipt: null,
+    idRecipeSelected: null,
     titleRecipeSelected: null,
+    detailRecipeItem: []
   }
 
   componentDidMount() {
@@ -92,13 +93,13 @@ class App extends Component {
 
   renderDetailRecipe = () => {
     return (
-      <Modal isOpen={this.state.openModalRecipe} toggle={this.toggle} style={{maxWidth: '1366'}}>
+      <Modal isOpen={this.state.openModalRecipe} toggle={this.toggle} style={{maxWidth: '1366px'}}>
         <ModalHeader toggle={this.toggle}>Nutrition Calculation</ModalHeader>
         <ModalBody>
         <div className='container'>
               <div className='row'>
                 <div className='col-12'>
-                  <h4>{this.state.titleRecipeSelected}</h4>
+                  <h4>Nama Recipe: {this.state.titleRecipeSelected}</h4>
                 </div>
               </div>
           </div>
@@ -106,6 +107,7 @@ class App extends Component {
           <table class="table mt-5">
             <thead class="thead-dark">
               <tr>
+                
                 <th scope="col">Material</th>
                 <th scope="col">Weight / gram</th>
                 <th scope='col'>Calorie (kcal)</th>
@@ -118,10 +120,12 @@ class App extends Component {
                 <th scope="col">Fiber</th>
                 <th scope='col'>Price</th>
                 <th scope='col'>Source</th>
+                <th scope='col'>Edit</th>
+                <th scope='col'>Delete</th>
               </tr>
             </thead>
             <tbody>
-            {this.renderDataRecipe(this.state.idReceipt)}
+              {this.renderDetailRecipeItem()}
 
             </tbody>
             </table>
@@ -135,21 +139,73 @@ class App extends Component {
     )
   }
 
-  renderDataRecipe = (id) => {
-      Axios.get(URL_API + '/recipe/getDetailRecipe/' + id)
+  deleteRecipeItem = (id, bahan) => {
+    let bool = window.confirm(`Apakah anda ingin menghapus bahan ${bahan} ?`)
+    if(bool) {
+      Axios.get(URL_API + '/recipe/deleterecipedetail/' + id) 
       .then((res) => {
-        return res.data.map((val, index) => {
-          return (
-            <tr key={index}>
-                <td></td>
-            </tr>
-          )
-        })
+        if(res.status === 200) {
+          Axios.get(URL_API + '/recipe/getrecipedetail/' + id)
+          .then((res) => {
+            console.log(res.data)
+            this.setState({
+              openModalRecipe: false
+            })
+            
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        }
       })
       .catch((err) => {
         console.log(err)
       })
+    }
   }
+
+  renderDetailRecipeItem = () => {
+    if(this.state.detailRecipeItem.length !== 0) {
+      return this.state.detailRecipeItem.map((val, index) => {
+        return (
+          <tr key={index}> 
+            <td>{val.material}</td>
+            <td>{val.gram}</td>
+            <td>{`${parseFloat(val.calorie * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.protein * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.totalFat * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.saturated * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.mufa * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.pufa * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.carbohydrat * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.fiber * val.gram).toFixed(2)}`}</td>
+            <td>{`Rp ${numeral(parseFloat(val.price * val.gram).toFixed(2)).format(0,0)}`}</td>
+            <td>
+              <a href={val.source_url} target='_blank' rel='noopener noreferrer'>
+                Link Source
+              </a>
+            </td>
+            <td>
+              <Button className='btn btn-success' onClick={() => this.setState({editRecipeDetail: val.id})}>
+                  Edit Bahan
+              </Button>
+            </td>
+            <td>
+              <Button className='btn btn-danger' onClick={() => this.deleteRecipeItem(val.id, val.material)}>
+                  Delete
+              </Button>
+            </td>
+          </tr>
+        )
+      })
+    }
+  }
+
+  // renderDataRecipe = (id) => {
+  //     if(id) {
+       
+  //     }
+  // }
 
   saveRecipe = () => {
     let Arr = [];
@@ -158,7 +214,7 @@ class App extends Component {
 
     for(let i = 0; i < this.state.jumlahBuah; i++) {
       var data = {
-        itemId: this.refs[`namaBuah${i}`].value, 
+        itemId: parseInt(this.refs[`namaBuah${i}`].value) + 1, 
         gram : this.refs[`gram${i}`].value
       }
 
@@ -270,7 +326,6 @@ class App extends Component {
   //   )
   // }
 
-
   searchRecipe = () => {
     alert(this.refs.searchName.value)
     Axios.get(URL_API + '/recipe/searchrecipe/' + this.refs.searchName.value)
@@ -320,7 +375,7 @@ class App extends Component {
                {val.recipeName}
              </td>
            <td>
-           <input type='button' className='btn btn-primary' value='Detail Recipe' onClick={() => this.setState({openModalRecipe: true, idReciceSelected: val.id, titleRecipeSelected: val.recipeName})}/> 
+           <input type='button' className='btn btn-primary' value='Detail Recipe' onClick={() => this.getDetailRecipeItem(val.id, val.recipeName)}/> 
            </td>
          </tr>
        )
@@ -332,17 +387,35 @@ class App extends Component {
     
   }
 
+  getDetailRecipeItem = (id, title) => {
+    Axios.get(URL_API + '/recipe/getrecipedetail/' + id)
+    .then((res) => {
+      console.log(res.data)
+      this.setState({
+        detailRecipeItem: res.data,
+        titleRecipeSelected: title,
+        openModalRecipe: true,
+      })
+      
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
   toggle = () => {
     if(this.state.openModal) {   
       this.setState({
-        openModal: !this.state.openModal
+        openModal: !this.state.openModal,
+        jumlahBuah: 0
       })
     }
     if(this.state.openModalRecipe) {
       this.setState({
         openModalRecipe: !this.state.openModalRecipe,
-        idReceipt: null,
-        titleRecipeSelected: null
+        idRecipeSelected: null,
+        titleRecipeSelected: null,
+        detailRecipeItem: []
       })
     }
   }
@@ -378,6 +451,7 @@ class App extends Component {
             {
               this.state.data.length !== 0 ?
               <div className='container'>
+                
                 <div className='row'>
                   <div className='col-12'>
                   <table class="table mt-5">
