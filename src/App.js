@@ -16,6 +16,7 @@ class App extends Component {
     loading: false, 
     loadingData: false,
     data : [],
+    renderulang : false,
 
     openModal: false,
     openModalRecipe: false,
@@ -29,8 +30,10 @@ class App extends Component {
     Axios.get(URL_API + '/item/getItem')
     .then((res) => {
       this.setState({
-        dataAwal: res.data
+        dataAwal: res.data,
+
       })
+      console.log(this.state.dataAwal)
     })
     .catch((err) => {
       console.log(err)
@@ -39,7 +42,7 @@ class App extends Component {
 
   renderAddRecipe = () => {
     return (
-      <Modal isOpen={this.state.openModal} toggle={this.toggle} size='xl'>
+      <Modal isOpen={this.state.openModal} toggle={this.toggle} style={{maxWidth : '1366px'}}>
         <ModalHeader toggle={this.toggle}>Nutrition Calculation</ModalHeader>
         <ModalBody>
         <div className='container'>
@@ -61,6 +64,16 @@ class App extends Component {
                         <th scope="col">No</th>
                         <th scope="col">Material Name</th>
                         <th scope="col">Weight (gram)</th>
+                        <th scope="col">Calorie</th>
+                        <th scope="col">Protein</th>
+                        <th scope="col">TotalFat</th>
+                        <th scope="col">Saturated</th>
+                        <th scope="col">MUFA</th>
+                        <th scope="col">PUFA</th>
+                        <th scope="col">Carbo</th>
+                        <th scope="col">Fiber</th>
+                        <th scope="col">Price</th>
+
                       </tr>
                     </thead>
                     <tbody>
@@ -174,38 +187,89 @@ class App extends Component {
       var Arrjsx = []
 
       for(let x = 0; x < this.state.jumlahBuah; x++) {
+ 
+        var data = this.state.dataAwal[x]
+        // var {calorie, protein, totalFat, saturated, mufa, pufa, carbohydrat, fiber, price} = data
+    
+ 
+
           Arrjsx.push(
-            <tr>
+            
+        <tr>
             <td>
               {x + 1}
             </td>
             <td>
-             <select ref={`namaBuah${x}`} className='form-control'>
-                <option value=''>Pilih bahan</option>
+             <select ref={`namaBuah${x}`} className='form-control' onChange={()=>this.setState({ renderulang : false})}>
                 {
                   this.state.dataAwal.map((val, index) => {
-                    return <option key={index} value={val.id}>{val.material}</option>
+                    return <option key={index} value={val.id-1}>{val.material}</option>
                   })
                 }
              </select>
+        
             </td>   
             <td>
-                <input type='number' className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`}/>
+                <input type='number' className='form-control' placeholder='Masukkan berat buah' ref={`gram${x}`} defaultValue={0} onChange={()=>this.setState({ renderulang : false})}/>
             </td>
+            {/* {this.renderNutrisiBuah(this.refs[`namabuah${x}`].value)} */}
+  
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].protein * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].totalFat * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].saturated * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].mufa * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].pufa * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].carbohydrat * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].fiber * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].price * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
 
         </tr>
           )        
       }
 
+      // if(!this.state.finishrender){
+
+      //   this.setState({
+      //     finishrender : true
+      //   })
+      // }
+      
+      
+
       return Arrjsx;
     }
 
+  
     return (
       <tr col='4'>
           <td>Belum ada data buah</td>
       </tr>
     )
   }
+
+// renderNutrisiBuah = (data) =>{
+//   console.log(data)
+// }
+
+// <td>{`${parseFloat(data.calorie).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.protein).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.totalFat).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.saturated).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.mufa).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.pufa).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.carbohydrat).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.fiber).toFixed(2)}`}</td>
+// <td>{`${parseFloat(data.price).toFixed(2)}`}</td>
+  
+
+  // renderNutritionDetails = (data) => {
+  //   return (
+
+
+  //   )
+  // }
+
 
   searchRecipe = () => {
     alert(this.refs.searchName.value)
