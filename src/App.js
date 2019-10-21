@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import {URL_API} from './supports/URL';
 import numeral from 'numeral'
@@ -55,7 +55,7 @@ class App extends Component {
   renderAddRecipe = () => {
     return (
       <Modal isOpen={this.state.openModal} toggle={this.toggle} style={{maxWidth : '1366px'}}>
-        <ModalHeader toggle={this.toggle}>Nutrition Calculation</ModalHeader>
+        <ModalHeader toggle={this.toggle}>Add Recipe</ModalHeader>
         <ModalBody>
         <div className='container'>
           <div className='row'>
@@ -98,8 +98,8 @@ class App extends Component {
         </table>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.saveRecipe}>Save</Button>{' '}
-          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+          <Button color="success" onClick={this.saveRecipe}>Save</Button>{' '}
+          <Button color="danger" onClick={this.toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
     )
@@ -108,7 +108,7 @@ class App extends Component {
   renderDetailRecipe = () => {
     return (
       <Modal isOpen={this.state.openModalRecipe} toggle={this.toggle} style={{maxWidth: '1366px'}}>
-        <ModalHeader toggle={this.toggle}>Nutrition Calculation</ModalHeader>
+        <ModalHeader toggle={this.toggle}>Detail Recipe</ModalHeader>
         <ModalBody>
         <div className='container'>
               <div className='row'>
@@ -148,8 +148,8 @@ class App extends Component {
           
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.toggle}>Save</Button>{' '}
-          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+          {/* <Button color="primary" onClick={this.toggle}>Save</Button>{' '} */}
+          <Button color="danger" onClick={this.toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
     )
@@ -191,7 +191,7 @@ class App extends Component {
             <td>
             <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gram${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999'/>
             </td>
-            <td>{`${parseFloat(val.calorie * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.calorie * (val.gram / 100)).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.protein * val.gram).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.totalFat * val.gram).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.saturated * val.gram).toFixed(2)}`}</td>
@@ -224,7 +224,7 @@ class App extends Component {
             <td>
             <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gram${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999' disabled/>
             </td>
-            <td>{`${parseFloat(val.calorie * val.gram).toFixed(2)}`}</td>
+            <td>{`${parseFloat(val.calorie * (val.gram / 100)).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.protein * val.gram).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.totalFat * val.gram).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.saturated * val.gram).toFixed(2)}`}</td>
@@ -306,7 +306,7 @@ renderTotalResDetail = () =>{
       }
       else {
         totalweight = parseFloat(totalweight) + parseFloat(this.refs[`gram${i}`].value)
-        totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(this.refs[`gram${i}`].value))
+        totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(this.refs[`gram${i}`].value / 100))
         totalprotein = parseFloat(totalprotein) + parseFloat(this.state.detailRecipeItem[i].protein * parseFloat(this.refs[`gram${i}`].value))
         totalFat = parseFloat(totalFat) + parseFloat(this.state.detailRecipeItem[i].totalFat * parseFloat(this.refs[`gram${i}`].value))
         totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.detailRecipeItem[i].saturated * parseFloat(this.refs[`gram${i}`].value))
@@ -321,7 +321,6 @@ renderTotalResDetail = () =>{
     }
     return (
       <tr>
-        <td></td>
         <td className="font-weight-bold">Total :  </td>
         <td className="font-weight-bold text-gray"> {parseFloat(totalweight).toFixed(2)}</td>
         <td className="font-weight-bold text-gray">{parseFloat(totalcalorie).toFixed(2)}</td>
@@ -359,7 +358,7 @@ renderTotalResDetail = () =>{
         }
         else {
           totalweight = parseFloat(totalweight) + parseFloat(this.refs[`gram${i}`].value)
-          totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].calorie * parseFloat(this.refs[`gram${i}`].value))
+          totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].calorie * parseFloat(this.refs[`gram${i}`].value / 100))
           totalprotein = parseFloat(totalprotein) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].protein * parseFloat(this.refs[`gram${i}`].value))
           totalFat = parseFloat(totalFat) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].totalFat * parseFloat(this.refs[`gram${i}`].value))
           totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].saturated * parseFloat(this.refs[`gram${i}`].value))
@@ -412,10 +411,18 @@ renderTotalResDetail = () =>{
 
     Axios.post(URL_API + '/recipe/postrecipe', Arr)
     .then((res) => {
-      this.setState({
-        openModal: false, 
-        jumlahBuah: 0
+      Axios.get(URL_API + '/recipe/getrecipe')
+      .then((res)=>{
+        this.setState({
+          data: res.data,
+          openModal: false, 
+          jumlahBuah: 0
+        })
       })
+      .catch((err)=>{
+        console.log(err)
+      })
+     
     })
     .catch((err) => {
       this.setState({
@@ -462,7 +469,7 @@ renderTotalResDetail = () =>{
             </td>
             {/* {this.renderNutrisiBuah(this.refs[`namabuah${x}`].value)} */}
   
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie * (this.refs[`gram${x}`].value / 100)).toFixed(2)}`}</td>
             <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].protein * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
             <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].totalFat * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
             <td>{!this.refs[`namaBuah${x}`] ? null :   `${parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].saturated * this.refs[`gram${x}`].value).toFixed(2)}`}</td>
@@ -583,7 +590,7 @@ renderTotalResDetail = () =>{
   }
 
   deleteRecipe = (id) => {
-    let bool = window.confirm(`Apakah anda yakin ingin mneghapus data ini?`)
+    let bool = window.confirm(`Apakah anda yakin ingin menghapus data ini?`)
     if(bool) {
       Axios.get(URL_API + '/recipe/deleterecipe/' + id)
       .then((res) => {
