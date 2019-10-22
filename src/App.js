@@ -24,7 +24,8 @@ class App extends Component {
     idRecipeSelected: null,
     titleRecipeSelected: null,
     detailRecipeItem: [],
-    
+    finishloaddetail : false,
+    loaddetails : false
   }
 
   componentDidMount() {
@@ -106,53 +107,56 @@ class App extends Component {
   }
 
   renderDetailRecipe = () => {
-    return (
-      <Modal isOpen={this.state.openModalRecipe} toggle={this.toggle} style={{maxWidth: '1366px'}}>
-        <ModalHeader toggle={this.toggle}>Detail Recipe</ModalHeader>
-        <ModalBody>
-        <div className='container'>
-              <div className='row'>
-                <div className='col-12'>
-                  <h4>Nama Recipe: {this.state.titleRecipeSelected}</h4>
+    if(this.state.finishloaddetail){
+      
+      return (
+        <Modal isOpen={this.state.openModalRecipe} toggle={this.toggle} style={{maxWidth: '1366px'}}>
+          <ModalHeader toggle={this.toggle}>Detail Recipe</ModalHeader>
+          <ModalBody>
+          <div className='container'>
+                <div className='row'>
+                  <div className='col-12'>
+                    <h4>Nama Recipe: {this.state.titleRecipeSelected}</h4>
+                  </div>
                 </div>
-              </div>
-          </div>
-
-          <table class="table mt-5">
-            <thead class="thead-dark">
-              <tr>
-                
-                <th scope="col">Material</th>
-                <th scope="col">Weight / gram</th>
-                <th scope='col'>Calorie (kcal)</th>
-                <th scope="col">Protein / gram</th>
-                <th scope="col">Total Fat</th>
-                <th scope='col'>Saturated</th>
-                <th scope="col">MUFA</th>
-                <th scope='col'>PUFA</th>
-                <th scope="col">Carbohydrate</th>
-                <th scope="col">Fiber</th>
-                <th scope='col'>Price</th>
-                <th scope='col'>Source</th>
-                <th scope='col'>Edit</th>
-                <th scope='col'>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.renderDetailRecipeItem()}
-            </tbody>
-            <tfoot>
-              {this.renderTotalResDetail()}
-            </tfoot>
-            </table>
-          
-        </ModalBody>
-        <ModalFooter>
-          {/* <Button color="primary" onClick={this.toggle}>Save</Button>{' '} */}
-          <Button color="danger" onClick={this.toggle}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
-    )
+            </div>
+  
+            <table class="table mt-5">
+              <thead class="thead-dark">
+                <tr>
+                  
+                  <th scope="col">Material</th>
+                  <th scope="col">Weight / gram</th>
+                  <th scope='col'>Calorie (kcal)</th>
+                  <th scope="col">Protein / gram</th>
+                  <th scope="col">Total Fat</th>
+                  <th scope='col'>Saturated</th>
+                  <th scope="col">MUFA</th>
+                  <th scope='col'>PUFA</th>
+                  <th scope="col">Carbohydrate</th>
+                  <th scope="col">Fiber</th>
+                  <th scope='col'>Price</th>
+                  <th scope='col'>Source</th>
+                  <th scope='col'>Edit</th>
+                  <th scope='col'>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.renderDetailRecipeItem()}
+              </tbody>
+              <tfoot>
+                {this.renderTotalResDetail()}
+              </tfoot>
+              </table>
+            
+          </ModalBody>
+          <ModalFooter>
+            {/* <Button color="primary" onClick={this.toggle}>Save</Button>{' '} */}
+            <Button color="danger" onClick={this.toggle}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+      )
+    }
   }
 
   deleteRecipeItem = (id, bahan) => {
@@ -182,14 +186,16 @@ class App extends Component {
 
   renderDetailRecipeItem = () => {
     if(this.state.detailRecipeItem.length !== 0) {
+      console.log(this.state.detailRecipeItem)
       
-      return this.state.detailRecipeItem.map((val, index) => {
+      var jsx =  this.state.detailRecipeItem.map((val, index) => {
+        console.log('map ' + index)
         if(this.state.editRecipeDetail === val.id){
           return (
             <tr key={index}> 
             <td>{val.material}</td>
             <td>
-            <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gram${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999'/>
+            <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gramdetail${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999'/>
             </td>
             <td>{`${parseFloat(val.calorie * (val.gram / 100)).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.protein * val.gram).toFixed(2)}`}</td>
@@ -222,7 +228,7 @@ class App extends Component {
           <tr key={index}> 
             <td>{val.material}</td>
             <td>
-            <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gram${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999' disabled/>
+            <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gramdetail${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999' disabled/>
             </td>
             <td>{`${parseFloat(val.calorie * (val.gram / 100)).toFixed(2)}`}</td>
             <td>{`${parseFloat(val.protein * val.gram).toFixed(2)}`}</td>
@@ -251,11 +257,20 @@ class App extends Component {
           </tr>
         )
       })
+
+      if(!this.state.loaddetails){
+        console.log('asd')
+        this.setState({
+          loaddetails : true
+        })
+      }
+
+      return jsx
     }
   }
 
   updateGramRecipeDetail = (id, index) => {
-    Axios.post(URL_API + '/recipe/editRecipeDetailItem/' + id, { data: this.refs[`gram${index}`].value})
+    Axios.post(URL_API + '/recipe/editRecipeDetailItem/' + id, { data: this.refs[`gramdetail${index}`].value})
     .then((res) => {
       alert('Data Berhasil diubah')
       this.setState({
@@ -288,7 +303,9 @@ class App extends Component {
 // <td>{`${parseFloat(data.price).toFixed(2)}`}</td>
 
 renderTotalResDetail = () =>{
-  if(this.state.detailRecipeItem.length > 0 ){
+
+  if(this.state.loaddetails){
+   
     var totalweight = 0
     var totalcalorie = 0
     var totalprotein = 0
@@ -301,23 +318,22 @@ renderTotalResDetail = () =>{
     var totalprice = 0
 
     for(var i = 0 ; i < this.state.detailRecipeItem.length ; i++){
-      if(!this.refs[`gram${i}`]){
+      console.log(i)
+        console.log(this.state.detailRecipeItem[i].gram)
+        let value = this.refs[`gramdetail${i}`] ? this.refs[`gramdetail${i}`].value : this.state.detailRecipeItem[i].gram
+        totalweight = parseFloat(totalweight) + parseFloat(value)
+        totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(value / 100))
+        totalprotein = parseFloat(totalprotein) + parseFloat(this.state.detailRecipeItem[i].protein * parseFloat(value))
+        totalFat = parseFloat(totalFat) + parseFloat(this.state.detailRecipeItem[i].totalFat * parseFloat(value))
+        totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.detailRecipeItem[i].saturated * parseFloat(value))
 
-      }
-      else {
-        totalweight = parseFloat(totalweight) + parseFloat(this.refs[`gram${i}`].value)
-        totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(this.refs[`gram${i}`].value / 100))
-        totalprotein = parseFloat(totalprotein) + parseFloat(this.state.detailRecipeItem[i].protein * parseFloat(this.refs[`gram${i}`].value))
-        totalFat = parseFloat(totalFat) + parseFloat(this.state.detailRecipeItem[i].totalFat * parseFloat(this.refs[`gram${i}`].value))
-        totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.detailRecipeItem[i].saturated * parseFloat(this.refs[`gram${i}`].value))
+        totalmufa = parseFloat(totalmufa) + parseFloat(this.state.detailRecipeItem[i].mufa * parseFloat(value))
+        totalpufa = parseFloat(totalpufa) + parseFloat(this.state.detailRecipeItem[i].pufa * parseFloat(value))
+        totalcarbohydrat = parseFloat(totalcarbohydrat) + parseFloat(this.state.detailRecipeItem[i].carbohydrat * parseFloat(value))
+        totalfiber = parseFloat(totalfiber) + parseFloat(this.state.detailRecipeItem[i].fiber * parseFloat(value))
+        totalprice = parseFloat(totalprice) + parseFloat(this.state.detailRecipeItem[i].price * parseFloat(value))
 
-        totalmufa = parseFloat(totalmufa) + parseFloat(this.state.detailRecipeItem[i].mufa * parseFloat(this.refs[`gram${i}`].value))
-        totalpufa = parseFloat(totalpufa) + parseFloat(this.state.detailRecipeItem[i].pufa * parseFloat(this.refs[`gram${i}`].value))
-        totalcarbohydrat = parseFloat(totalcarbohydrat) + parseFloat(this.state.detailRecipeItem[i].carbohydrat * parseFloat(this.refs[`gram${i}`].value))
-        totalfiber = parseFloat(totalfiber) + parseFloat(this.state.detailRecipeItem[i].fiber * parseFloat(this.refs[`gram${i}`].value))
-        totalprice = parseFloat(totalprice) + parseFloat(this.state.detailRecipeItem[i].price * parseFloat(this.refs[`gram${i}`].value))
-
-      }
+      
     }
     return (
       <tr>
@@ -503,27 +519,7 @@ renderTotalResDetail = () =>{
     )
   }
 
-// renderNutrisiBuah = (data) =>{
-//   console.log(data)
-// }
 
-// <td>{`${parseFloat(data.calorie).toFixed(2)}`}</td>
-// <td>{`${parseFloat(data.protein).toFixed(2)}`}</td>
-// <td>{`${parseFloat(data.totalFat).toFixed(2)}`}</td>
-// <td>{`${parseFloat(data.saturated).toFixed(2)}`}</td>
-// <td>{`${parseFloat(data.mufa).toFixed(2)}`}</td>
-// <td>{`${parseFloat(data.pufa).toFixed(2)}`}</td>
-// <td>{`${parseFloat(data.carbohydrat).toFixed(2)}`}</td>
-// <td>{`${parseFloat(data.fiber).toFixed(2)}`}</td>
-// <td>{`${parseFloat(data.price).toFixed(2)}`}</td>
-  
-
-  // renderNutritionDetails = (data) => {
-  //   return (
-
-
-  //   )
-  // }
 
   searchRecipe = () => {
     alert(this.refs.searchName.value)
@@ -541,29 +537,7 @@ renderTotalResDetail = () =>{
   renderRecipe = () => {
     if(this.state.data.length !== 0) {
       let jsx = this.state.data.map((val, index) => {
-        // if(this.state.editSelected === val.id) {
-        //  return (
-        //    <tr key={index}>
-        //      <td>
-        //        {val.id}
-        //      </td>
-        //      <td>
-        //        <input type='select'>
-        //          <option></option>
-        //        </input>
-        //      </td>
-        //      <td>
-        //        <input ref={(beratBuah) => this.beratBuah = beratBuah} type='number' placeholder='Masukkan berat buah' />
-        //      </td>
-        //      <td>
-        //        <input type='button' className='btn btn-success' value='Save' onClick={() => this.EditDataBuah()}/> 
-        //      </td>
-        //      <td>
-        //      <input type='button' className='btn btn-danger' value='Cancel' onClick={() => this.setState({editSelected: null})}/> 
-        //      </td>
-        //    </tr>
-        //  )
-        // } 
+
         
         return (
          <tr key={index}>
@@ -613,11 +587,11 @@ renderTotalResDetail = () =>{
   getDetailRecipeItem = (id, title) => {
     Axios.get(URL_API + '/recipe/getrecipedetail/' + id)
     .then((res) => {
-      console.log(res.data)
       this.setState({
         detailRecipeItem: res.data,
         titleRecipeSelected: title,
         openModalRecipe: true,
+        finishloaddetail : true
       })
       
     })
