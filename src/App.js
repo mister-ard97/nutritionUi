@@ -19,6 +19,9 @@ class App extends Component {
     renderulang : false,
     renderulang1: false,
 
+    editnominal : 0,
+    updatedvalue : [null, null],
+
     openModal: false,
     openModalRecipe: false,
     idRecipeSelected: null,
@@ -233,7 +236,7 @@ class App extends Component {
           <tr key={index}> 
             <td>{val.material}</td>
             <td>
-            <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gramdetail${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999' disabled/>
+            <input type='number' value={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gramdetail${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999' disabled/>
             </td>
             <td>{`${(val.calorie * (val.gram / 100) ).toFixed(3).replace(/[.]/g,',')}`}</td>
             <td>{`${(val.protein * (val.gram / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
@@ -250,7 +253,7 @@ class App extends Component {
               </a>
             </td>
             <td>
-              <Button className='btn btn-success' onClick={() => this.setState({editRecipeDetail: val.id})}>
+              <Button className='btn btn-success' onClick={() => this.setState({editRecipeDetail: val.id, renderulang : true, updatedvalue : [null, null]})}>
                   Edit Bahan
               </Button>
             </td>
@@ -277,14 +280,23 @@ class App extends Component {
   updateGramRecipeDetail = (id, index) => {
     Axios.post(URL_API + '/recipe/editRecipeDetailItem/' + id, { data: this.refs[`gramdetail${index}`].value})
     .then((res) => {
-      alert('Data Berhasil diubah')
+      // this.setState({
+      //   openModalRecipe : false
+      // })
+      
       this.setState({
-        openModalRecipe: false,
-        idRecipeSelected: null,
-        titleRecipeSelected: null,
-        detailRecipeItem: [],
-        editRecipeDetail: null
+        editRecipeDetail : null,
+        updatedvalue : [index , this.refs[`gramdetail${index}`].value]
       })
+      this.getDetailRecipeItem(this.state.idRecipeSelected, this.state.titleRecipeSelected)
+      this.renderTotalResDetail()
+
+      // this.setState({
+      //   idRecipeSelected: null,
+      //   titleRecipeSelected: null,
+      //   detailRecipeItem: [],
+      //   editRecipeDetail: null
+      // })
     })
     .catch((err) => {
       console.log(err)
@@ -308,9 +320,7 @@ class App extends Component {
 // <td>{`${parseFloat(data.price).toFixed(3)}`}</td>
 
 renderTotalResDetail = () =>{
-
-  if(this.state.loaddetails){
-   
+  console.log('***************************************************************8')
     var totalweight = 0
     var totalcalorie = 0
     var totalprotein = 0
@@ -325,7 +335,11 @@ renderTotalResDetail = () =>{
     for(var i = 0 ; i < this.state.detailRecipeItem.length ; i++){
       console.log(i)
         console.log(this.state.detailRecipeItem[i].gram)
-        let value = this.refs[`gramdetail${i}`] ? this.refs[`gramdetail${i}`].value : this.state.detailRecipeItem[i].gram
+        if(i === this.state.updatedvalue[0]){
+          var value = this.state.updatedvalue[1]
+        }else{
+          var value = this.refs[`gramdetail${i}`] ? this.refs[`gramdetail${i}`].value : this.state.detailRecipeItem[i].gram
+        }
         totalweight = parseFloat(totalweight) + parseFloat(value)
         totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(value / 100))
         totalprotein = parseFloat(totalprotein) + parseFloat(this.state.detailRecipeItem[i].protein * parseFloat(value / 100))
@@ -343,7 +357,7 @@ renderTotalResDetail = () =>{
     return (
       <tr>
         <td className="font-weight-bold">Total :  </td>
-        <td className="font-weight-bold text-gray"> {(totalweight).toFixed(3).replace(/[.]/g,',')}</td>
+        <td className="font-weight-bold text-gray"> {(totalweight).toFixed(2)}</td>
         <td className="font-weight-bold text-gray">{(totalcalorie).toFixed(3).replace(/[.]/g,',')}</td>
         <td className="font-weight-bold text-gray">{(totalprotein).toFixed(3).replace(/[.]/g,',')}</td>
         <td className="font-weight-bold text-gray">{(totalFat).toFixed(3).replace(/[.]/g,',')}</td>
@@ -356,7 +370,7 @@ renderTotalResDetail = () =>{
 
       </tr>
     )
-  }
+  
  
 }
 
@@ -396,7 +410,7 @@ renderTotalResDetail = () =>{
         <tr>
           <td></td>
           <td className="font-weight-bold">Total :  </td>
-          <td className="font-weight-bold text-gray"> {(totalweight).toFixed(3).replace(/[.]/g,',')}</td>
+          <td className="font-weight-bold text-gray"> {(totalweight).toFixed(2)}</td>
           <td className="font-weight-bold text-gray">{(totalcalorie).toFixed(3).replace(/[.]/g,',')}</td>
           <td className="font-weight-bold text-gray">{(totalprotein).toFixed(3).replace(/[.]/g,',')}</td>
           <td className="font-weight-bold text-gray">{(totalFat).toFixed(3).replace(/[.]/g,',')}</td>
@@ -542,6 +556,7 @@ renderTotalResDetail = () =>{
 
   renderRecipe = () => {
     if(this.state.data.length !== 0) {
+      
       let jsx = this.state.data.map((val, index) => {
 
         
@@ -597,8 +612,10 @@ renderTotalResDetail = () =>{
         detailRecipeItem: res.data,
         titleRecipeSelected: title,
         openModalRecipe: true,
-        finishloaddetail : true
+        finishloaddetail : true,
+        idRecipeSelected : id,
       })
+
       
     })
     .catch((err) => {
@@ -616,16 +633,17 @@ renderTotalResDetail = () =>{
     if(this.state.openModalRecipe) {
       this.setState({
         openModalRecipe: !this.state.openModalRecipe,
-        idRecipeSelected: null,
+        // idRecipeSelected: null,
         editRecipeDetail : null,
-        titleRecipeSelected: null,
-        detailRecipeItem: []
+        // titleRecipeSelected: null,
+        // detailRecipeItem: []
       })
     }
   }
 
 
   render() {
+    console.log(this.state.idRecipeSelected)
     return (
       <div>
           <div className='bg-light'>
