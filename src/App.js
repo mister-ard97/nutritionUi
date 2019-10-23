@@ -60,7 +60,7 @@ class App extends Component {
     return (
       <Modal isOpen={this.state.openModal} toggle={this.toggle} style={{maxWidth : '1366px'}}>
         <ModalHeader toggle={this.toggle}>Add Recipe</ModalHeader>
-        <ModalBody>
+        <ModalBody style={{overflowX : 'auto'}}>
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
@@ -115,7 +115,7 @@ class App extends Component {
       return (
         <Modal isOpen={this.state.openModalRecipe} toggle={this.toggle} style={{maxWidth: '1366px'}}>
           <ModalHeader toggle={this.toggle}>Detail Recipe</ModalHeader>
-          <ModalBody>
+          <ModalBody style={{overflowX : 'auto'}}>
           <div className='container'>
                 <div className='row'>
                   <div className='col-12'>
