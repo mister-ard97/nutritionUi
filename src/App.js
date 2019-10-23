@@ -204,14 +204,14 @@ class App extends Component {
             <td>
             <input type='number' defaultValue={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gramdetail${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999'/>
             </td>
-            <td>{!val.material ? null :   `${(val.calorie * (this.refs[`gramdetail${index}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!val.material ? null :   `${(val.protein * (this.refs[`gramdetail${index}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!val.material ? null :   `${(val.totalFat * (this.refs[`gramdetail${index}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!val.material ? null :   `${(val.saturated * (this.refs[`gramdetail${index}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!val.material ? null :   `${(val.mufa * (this.refs[`gramdetail${index}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!val.material ? null :   `${(val.pufa * (this.refs[`gramdetail${index}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!val.material ? null :   `${(val.carbohydrat * (this.refs[`gramdetail${index}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!val.material ? null :   `${(val.fiber * (this.refs[`gramdetail${index}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!val.material ? null :   `${(val.calorie * (this.refs[`gramdetail${index}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!val.material ? null :   `${(val.protein * (this.refs[`gramdetail${index}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!val.material ? null :   `${(val.totalFat * (this.refs[`gramdetail${index}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!val.material ? null :   `${(val.saturated * (this.refs[`gramdetail${index}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!val.material ? null :   `${(val.mufa * (this.refs[`gramdetail${index}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!val.material ? null :   `${(val.pufa * (this.refs[`gramdetail${index}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!val.material ? null :   `${(val.carbohydrat * (this.refs[`gramdetail${index}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!val.material ? null :   `${(val.fiber * (this.refs[`gramdetail${index}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
             <td>{!val.material ? null :   `Rp. ${numeral(parseFloat(val.price * (this.refs[`gramdetail${index}`].value))).format(0,0)}`}</td>
             <td>
               <a href={val.source_url} target='_blank' rel='noopener noreferrer'>
@@ -238,14 +238,14 @@ class App extends Component {
             <td>
             <input type='number' value={val.gram} maxLength={4} className='form-control' placeholder='Masukkan berat buah' ref={`gramdetail${index}`}  onChange={()=>this.setState({ renderulang1 : true})} min='1' max='999' disabled/>
             </td>
-            <td>{`${(val.calorie * (val.gram / 100) ).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{`${(val.protein * (val.gram / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{`${(val.totalFat * (val.gram / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{`${(val.saturated * (val.gram / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{`${(val.mufa * (val.gram / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{`${(val.pufa * (val.gram / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{`${(val.carbohydrat * (val.gram / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{`${(val.fiber * (val.gram / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{`${(val.calorie * (val.gram) ).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{`${(val.protein * (val.gram)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{`${(val.totalFat * (val.gram)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{`${(val.saturated * (val.gram)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{`${(val.mufa * (val.gram)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{`${(val.pufa * (val.gram)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{`${(val.carbohydrat * (val.gram)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{`${(val.fiber * (val.gram)).toFixed(3).replace(/[.]/g,',')}`}</td>
             <td>{`Rp ${numeral(parseFloat(val.price * val.gram)).format(0,0)}`}</td>
             <td>
               <a href={val.source_url} target='_blank' rel='noopener noreferrer'>
@@ -335,21 +335,22 @@ renderTotalResDetail = () =>{
     for(var i = 0 ; i < this.state.detailRecipeItem.length ; i++){
       console.log(i)
         console.log(this.state.detailRecipeItem[i].gram)
+        var value;
         if(i === this.state.updatedvalue[0]){
-          var value = this.state.updatedvalue[1]
+          value = this.state.updatedvalue[1]
         }else{
-          var value = this.refs[`gramdetail${i}`] ? this.refs[`gramdetail${i}`].value : this.state.detailRecipeItem[i].gram
+          value = this.refs[`gramdetail${i}`] ? this.refs[`gramdetail${i}`].value : this.state.detailRecipeItem[i].gram
         }
         totalweight = parseFloat(totalweight) + parseFloat(value)
-        totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(value / 100))
-        totalprotein = parseFloat(totalprotein) + parseFloat(this.state.detailRecipeItem[i].protein * parseFloat(value / 100))
-        totalFat = parseFloat(totalFat) + parseFloat(this.state.detailRecipeItem[i].totalFat * parseFloat(value / 100))
-        totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.detailRecipeItem[i].saturated * parseFloat(value / 100))
+        totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(value))
+        totalprotein = parseFloat(totalprotein) + parseFloat(this.state.detailRecipeItem[i].protein * parseFloat(value))
+        totalFat = parseFloat(totalFat) + parseFloat(this.state.detailRecipeItem[i].totalFat * parseFloat(value))
+        totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.detailRecipeItem[i].saturated * parseFloat(value))
 
-        totalmufa = parseFloat(totalmufa) + parseFloat(this.state.detailRecipeItem[i].mufa * parseFloat(value / 100))
-        totalpufa = parseFloat(totalpufa) + parseFloat(this.state.detailRecipeItem[i].pufa * parseFloat(value / 100))
-        totalcarbohydrat = parseFloat(totalcarbohydrat) + parseFloat(this.state.detailRecipeItem[i].carbohydrat * parseFloat(value / 100))
-        totalfiber = parseFloat(totalfiber) + parseFloat(this.state.detailRecipeItem[i].fiber * parseFloat(value / 100))
+        totalmufa = parseFloat(totalmufa) + parseFloat(this.state.detailRecipeItem[i].mufa * parseFloat(value))
+        totalpufa = parseFloat(totalpufa) + parseFloat(this.state.detailRecipeItem[i].pufa * parseFloat(value))
+        totalcarbohydrat = parseFloat(totalcarbohydrat) + parseFloat(this.state.detailRecipeItem[i].carbohydrat * parseFloat(value))
+        totalfiber = parseFloat(totalfiber) + parseFloat(this.state.detailRecipeItem[i].fiber * parseFloat(value))
         totalprice = parseFloat(totalprice) + parseFloat(this.state.detailRecipeItem[i].price * parseFloat(value))
 
       
@@ -393,15 +394,15 @@ renderTotalResDetail = () =>{
         }
         else {
           totalweight = parseFloat(totalweight) + parseFloat(this.refs[`gram${i}`].value)
-          totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].calorie * parseFloat(this.refs[`gram${i}`].value / 100))
-          totalprotein = parseFloat(totalprotein) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].protein * parseFloat(this.refs[`gram${i}`].value / 100))
-          totalFat = parseFloat(totalFat) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].totalFat * parseFloat(this.refs[`gram${i}`].value / 100))
-          totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].saturated * parseFloat(this.refs[`gram${i}`].value / 100))
+          totalcalorie = parseFloat(totalcalorie) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].calorie * parseFloat(this.refs[`gram${i}`].value))
+          totalprotein = parseFloat(totalprotein) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].protein * parseFloat(this.refs[`gram${i}`].value))
+          totalFat = parseFloat(totalFat) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].totalFat * parseFloat(this.refs[`gram${i}`].value))
+          totalsaturated = parseFloat(totalsaturated) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].saturated * parseFloat(this.refs[`gram${i}`].value))
 
-          totalmufa = parseFloat(totalmufa) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].mufa * parseFloat(this.refs[`gram${i}`].value / 100))
-          totalpufa = parseFloat(totalpufa) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].pufa * parseFloat(this.refs[`gram${i}`].value / 100))
-          totalcarbohydrat = parseFloat(totalcarbohydrat) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].carbohydrat * parseFloat(this.refs[`gram${i}`].value / 100))
-          totalfiber = parseFloat(totalfiber) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].fiber * parseFloat(this.refs[`gram${i}`].value / 100))
+          totalmufa = parseFloat(totalmufa) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].mufa * parseFloat(this.refs[`gram${i}`].value))
+          totalpufa = parseFloat(totalpufa) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].pufa * parseFloat(this.refs[`gram${i}`].value))
+          totalcarbohydrat = parseFloat(totalcarbohydrat) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].carbohydrat * parseFloat(this.refs[`gram${i}`].value))
+          totalfiber = parseFloat(totalfiber) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].fiber * parseFloat(this.refs[`gram${i}`].value))
           totalprice = parseFloat(totalprice) + parseFloat(this.state.dataAwal[this.refs[`namaBuah${i}`].value].price * parseFloat(this.refs[`gram${i}`].value ))
 
         }
@@ -477,7 +478,10 @@ renderTotalResDetail = () =>{
 
       for(let x = 0; x < this.state.jumlahBuah; x++) {
  
-        var data = this.state.dataAwal[x]
+        // Dikomen karna ga dipake.
+        // var data = this.state.dataAwal[x]
+        
+        
         // var {calorie, protein, totalFat, saturated, mufa, pufa, carbohydrat, fiber, price} = data
     
  
@@ -504,14 +508,14 @@ renderTotalResDetail = () =>{
             </td>
             {/* {this.renderNutrisiBuah(this.refs[`namabuah${x}`].value)} */}
   
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie * (this.refs[`gram${x}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].protein * (this.refs[`gram${x}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].totalFat * (this.refs[`gram${x}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].saturated * (this.refs[`gram${x}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].mufa * (this.refs[`gram${x}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].pufa * (this.refs[`gram${x}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].carbohydrat * (this.refs[`gram${x}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
-            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].fiber * (this.refs[`gram${x}`].value / 100)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].calorie * (this.refs[`gram${x}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].protein * (this.refs[`gram${x}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].totalFat * (this.refs[`gram${x}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].saturated * (this.refs[`gram${x}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].mufa * (this.refs[`gram${x}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].pufa * (this.refs[`gram${x}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].carbohydrat * (this.refs[`gram${x}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
+            <td>{!this.refs[`namaBuah${x}`] ? null :   `${(this.state.dataAwal[this.refs[`namaBuah${x}`].value].fiber * (this.refs[`gram${x}`].value)).toFixed(3).replace(/[.]/g,',')}`}</td>
             <td>{!this.refs[`namaBuah${x}`] ? null :   `Rp. ${numeral(parseFloat(this.state.dataAwal[this.refs[`namaBuah${x}`].value].price * (this.refs[`gram${x}`].value))).format(0,0)}`}</td>
 
 
