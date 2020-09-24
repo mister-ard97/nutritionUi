@@ -285,7 +285,7 @@ class App extends Component {
                       parseFloat(
                         val.price * this.refs[`gramdetail${index}`].value
                       )
-                    ).format(0, 0)}`}
+                    ).format("0,0.[00]")}`}
               </td>
               <td>
                 <a
@@ -363,8 +363,7 @@ class App extends Component {
               .toFixed(3)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`Rp ${numeral(parseFloat(val.price * val.gram)).format(
-              0,
-              0
+              "0,0.[00]"
             )}`}</td>
             <td>
               <a
@@ -551,7 +550,7 @@ class App extends Component {
           {totalfiber.toFixed(3).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {`Rp. ` + numeral(parseFloat(totalprice)).format(0, 0)}
+          {`Rp. ` + numeral(parseFloat(totalprice)).format("0,0.[00]")}
         </td>
       </tr>
     );
@@ -665,7 +664,7 @@ class App extends Component {
             {totalfiber.toFixed(3).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {`Rp. ` + numeral(parseFloat(totalprice)).format(0, 0)}
+            {`Rp. ` + numeral(parseFloat(totalprice)).format("0,0.[00]")}
           </td>
         </tr>
       );
@@ -848,12 +847,12 @@ class App extends Component {
             <td>
               {!this.refs[`namaBuah${x}`]
                 ? null
-                : `Rp. ${parseFloat(
-                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].price *
-                      this.refs[`gram${x}`].value
-                  )
-                    .toFixed(1)
-                    .replace(/[.]/g, ",")}`}
+                : `Rp. ${numeral(
+                    parseFloat(
+                      this.state.dataAwal[this.refs[`namaBuah${x}`].value]
+                        .price * this.refs[`gram${x}`].value
+                    )
+                  ).format("0,0.[00]")}`}
             </td>
           </tr>
         );
