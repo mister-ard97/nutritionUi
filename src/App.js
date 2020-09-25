@@ -226,56 +226,56 @@ class App extends Component {
                 {!val.material
                   ? null
                   : `${(val.calorie * this.refs[`gramdetail${index}`].value)
-                      .toFixed(3)
+                      .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
               <td>
                 {!val.material
                   ? null
                   : `${(val.protein * this.refs[`gramdetail${index}`].value)
-                      .toFixed(3)
+                      .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
               <td>
                 {!val.material
                   ? null
                   : `${(val.totalFat * this.refs[`gramdetail${index}`].value)
-                      .toFixed(3)
+                      .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
               <td>
                 {!val.material
                   ? null
                   : `${(val.saturated * this.refs[`gramdetail${index}`].value)
-                      .toFixed(3)
+                      .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
               <td>
                 {!val.material
                   ? null
                   : `${(val.mufa * this.refs[`gramdetail${index}`].value)
-                      .toFixed(3)
+                      .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
               <td>
                 {!val.material
                   ? null
                   : `${(val.pufa * this.refs[`gramdetail${index}`].value)
-                      .toFixed(3)
+                      .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
               <td>
                 {!val.material
                   ? null
                   : `${(val.carbohydrat * this.refs[`gramdetail${index}`].value)
-                      .toFixed(3)
+                      .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
               <td>
                 {!val.material
                   ? null
                   : `${(val.fiber * this.refs[`gramdetail${index}`].value)
-                      .toFixed(3)
+                      .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
               <td>
@@ -339,28 +339,28 @@ class App extends Component {
               />
             </td>
             <td>{`${(val.calorie * val.gram)
-              .toFixed(3)
+              .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.protein * val.gram)
-              .toFixed(3)
+              .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.totalFat * val.gram)
-              .toFixed(3)
+              .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.saturated * val.gram)
-              .toFixed(3)
+              .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.mufa * val.gram)
-              .toFixed(3)
+              .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.pufa * val.gram)
-              .toFixed(3)
+              .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.carbohydrat * val.gram)
-              .toFixed(3)
+              .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.fiber * val.gram)
-              .toFixed(3)
+              .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`Rp ${numeral(parseFloat(val.price * val.gram)).format(
               "0,0.[00]"
@@ -448,15 +448,15 @@ class App extends Component {
   //     }
   // }
 
-  // <td>{`${parseFloat(data.calorie).toFixed(3)}`}</td>
-  // <td>{`${parseFloat(data.protein).toFixed(3)}`}</td>
-  // <td>{`${parseFloat(data.totalFat).toFixed(3)}`}</td>
-  // <td>{`${parseFloat(data.saturated).toFixed(3)}`}</td>
-  // <td>{`${parseFloat(data.mufa).toFixed(3)}`}</td>
-  // <td>{`${parseFloat(data.pufa).toFixed(3)}`}</td>
-  // <td>{`${parseFloat(data.carbohydrat).toFixed(3)}`}</td>
-  // <td>{`${parseFloat(data.fiber).toFixed(3)}`}</td>
-  // <td>{`${parseFloat(data.price).toFixed(3)}`}</td>
+  // <td>{`${parseFloat(data.calorie).toFixed(5)}`}</td>
+  // <td>{`${parseFloat(data.protein).toFixed(5)}`}</td>
+  // <td>{`${parseFloat(data.totalFat).toFixed(5)}`}</td>
+  // <td>{`${parseFloat(data.saturated).toFixed(5)}`}</td>
+  // <td>{`${parseFloat(data.mufa).toFixed(5)}`}</td>
+  // <td>{`${parseFloat(data.pufa).toFixed(5)}`}</td>
+  // <td>{`${parseFloat(data.carbohydrat).toFixed(5)}`}</td>
+  // <td>{`${parseFloat(data.fiber).toFixed(5)}`}</td>
+  // <td>{`${parseFloat(data.price).toFixed(5)}`}</td>
 
   renderTotalResDetail = () => {
     console.log(
@@ -526,28 +526,28 @@ class App extends Component {
           {totalweight.toFixed(2)}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalcalorie.toFixed(3).replace(/[.]/g, ",")}
+          {totalcalorie.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalprotein.toFixed(3).replace(/[.]/g, ",")}
+          {totalprotein.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalFat.toFixed(3).replace(/[.]/g, ",")}
+          {totalFat.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalsaturated.toFixed(3).replace(/[.]/g, ",")}
+          {totalsaturated.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalmufa.toFixed(3).replace(/[.]/g, ",")}
+          {totalmufa.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalpufa.toFixed(3).replace(/[.]/g, ",")}
+          {totalpufa.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalcarbohydrat.toFixed(3).replace(/[.]/g, ",")}
+          {totalcarbohydrat.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalfiber.toFixed(3).replace(/[.]/g, ",")}
+          {totalfiber.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
           {`Rp. ` + numeral(parseFloat(totalprice)).format("0,0.[00]")}
@@ -640,28 +640,28 @@ class App extends Component {
             {totalweight.toFixed(2)}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalcalorie.toFixed(3).replace(/[.]/g, ",")}
+            {totalcalorie.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalprotein.toFixed(3).replace(/[.]/g, ",")}
+            {totalprotein.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalFat.toFixed(3).replace(/[.]/g, ",")}
+            {totalFat.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalsaturated.toFixed(3).replace(/[.]/g, ",")}
+            {totalsaturated.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalmufa.toFixed(3).replace(/[.]/g, ",")}
+            {totalmufa.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalpufa.toFixed(3).replace(/[.]/g, ",")}
+            {totalpufa.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalcarbohydrat.toFixed(3).replace(/[.]/g, ",")}
+            {totalcarbohydrat.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalfiber.toFixed(3).replace(/[.]/g, ",")}
+            {totalfiber.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
             {`Rp. ` + numeral(parseFloat(totalprice)).format("0,0.[00]")}
@@ -771,7 +771,7 @@ class App extends Component {
                     this.state.dataAwal[this.refs[`namaBuah${x}`].value]
                       .calorie * this.refs[`gram${x}`].value
                   )
-                    .toFixed(3)
+                    .toFixed(5)
                     .replace(/[.]/g, ",")}`}
             </td>
             <td>
@@ -781,7 +781,7 @@ class App extends Component {
                     this.state.dataAwal[this.refs[`namaBuah${x}`].value]
                       .protein * this.refs[`gram${x}`].value
                   )
-                    .toFixed(3)
+                    .toFixed(5)
                     .replace(/[.]/g, ",")}`}
             </td>
             <td>
@@ -791,7 +791,7 @@ class App extends Component {
                     this.state.dataAwal[this.refs[`namaBuah${x}`].value]
                       .totalFat * this.refs[`gram${x}`].value
                   )
-                    .toFixed(3)
+                    .toFixed(5)
                     .replace(/[.]/g, ",")}`}
             </td>
             <td>
@@ -801,7 +801,7 @@ class App extends Component {
                     this.state.dataAwal[this.refs[`namaBuah${x}`].value]
                       .saturated * this.refs[`gram${x}`].value
                   )
-                    .toFixed(3)
+                    .toFixed(5)
                     .replace(/[.]/g, ",")}`}
             </td>
             <td>
@@ -811,7 +811,7 @@ class App extends Component {
                     this.state.dataAwal[this.refs[`namaBuah${x}`].value].mufa *
                     this.refs[`gram${x}`].value
                   )
-                    .toFixed(3)
+                    .toFixed(5)
                     .replace(/[.]/g, ",")}`}
             </td>
             <td>
@@ -821,7 +821,7 @@ class App extends Component {
                     this.state.dataAwal[this.refs[`namaBuah${x}`].value].pufa *
                     this.refs[`gram${x}`].value
                   )
-                    .toFixed(3)
+                    .toFixed(5)
                     .replace(/[.]/g, ",")}`}
             </td>
             <td>
@@ -831,7 +831,7 @@ class App extends Component {
                     this.state.dataAwal[this.refs[`namaBuah${x}`].value]
                       .carbohydrat * this.refs[`gram${x}`].value
                   )
-                    .toFixed(3)
+                    .toFixed(5)
                     .replace(/[.]/g, ",")}`}
             </td>
             <td>
@@ -841,7 +841,7 @@ class App extends Component {
                     this.state.dataAwal[this.refs[`namaBuah${x}`].value].fiber *
                     this.refs[`gram${x}`].value
                   )
-                    .toFixed(3)
+                    .toFixed(5)
                     .replace(/[.]/g, ",")}`}
             </td>
             <td>
