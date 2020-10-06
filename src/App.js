@@ -60,11 +60,11 @@ class App extends Component {
       <Modal
         isOpen={this.state.openModal}
         toggle={this.toggle}
-        style={{ maxWidth: "1366px" }}
+        style={{ maxWidth: "100%" }}
       >
         <ModalHeader toggle={this.toggle}>Add Recipe</ModalHeader>
-        <ModalBody style={{ overflowX: "auto" }}>
-          <div className="container">
+        <ModalBody style={{ overflowX: "scroll" }}>
+          <div>
             <div className="row">
               <div className="col-12">
                 <input
@@ -87,20 +87,36 @@ class App extends Component {
             </div>
           </div>
 
-          <table class="table mt-5">
-            <thead class="thead-dark">
+          <table className="table mt-5" style={{ width: "5000px" }}>
+            <thead className="thead-dark">
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">Material Name</th>
-                <th scope="col">Weight (gram)</th>
+                <th scope="col" style={{ width: "200px" }}>
+                  Material
+                </th>
+                <th scope="col" style={{ width: "200px" }}>
+                  Weight (gram)
+                </th>
                 <th scope="col">Calorie</th>
                 <th scope="col">Protein</th>
                 <th scope="col">TotalFat</th>
-                <th scope="col">Saturated</th>
-                <th scope="col">MUFA</th>
-                <th scope="col">PUFA</th>
-                <th scope="col">Carbo</th>
-                <th scope="col">Fiber</th>
+                <th scope="col">Asam a-linoleat (18:2) (g)</th>
+                <th scope="col">Carbohydrate (g)</th>
+                <th scope="col">Fiber (g)</th>
+                <th scope="col">Iron (mg)</th>
+                <th scope="col">Calcium (mg)</th>
+                <th scope="col">Zinc (mg)</th>
+
+                <th scope="col">Fosfor (mg)</th>
+                <th scope="col">Natrium/Sodium (mg)</th>
+                <th scope="col">Kalium/ Potassium (mg))</th>
+                <th scope="col">Magnesium (Mg)</th>
+                <th scope="col">Tiamin/B1 (mg)</th>
+                <th scope="col">Vit B12 (mikro)</th>
+
+                <th scope="col">Vit C (mg)</th>
+                <th scope="col">Vit D</th>
+                <th scope="col">Folat (mikro)</th>
                 <th scope="col">Price</th>
               </tr>
             </thead>
@@ -126,11 +142,11 @@ class App extends Component {
         <Modal
           isOpen={this.state.openModalRecipe}
           toggle={this.toggle}
-          style={{ maxWidth: "1366px" }}
+          style={{ maxWidth: "100%" }}
         >
           <ModalHeader toggle={this.toggle}>Detail Recipe</ModalHeader>
           <ModalBody style={{ overflowX: "auto" }}>
-            <div className="container">
+            <div>
               <div className="row">
                 <div className="col-12">
                   <h4>Nama Recipe: {this.state.titleRecipeSelected}</h4>
@@ -138,20 +154,34 @@ class App extends Component {
               </div>
             </div>
 
-            <table class="table mt-5">
-              <thead class="thead-dark">
+            <table className="table mt-5" style={{ width: "5000px" }}>
+              <thead className="thead-dark">
                 <tr>
+                  <th scope="col">No</th>
                   <th scope="col">Material</th>
-                  <th scope="col">Weight / gram</th>
-                  <th scope="col">Calorie (kcal)</th>
-                  <th scope="col">Protein / gram</th>
-                  <th scope="col">Total Fat</th>
-                  <th scope="col">Saturated</th>
-                  <th scope="col">MUFA</th>
-                  <th scope="col">PUFA</th>
-                  <th scope="col">Carbohydrate</th>
-                  <th scope="col">Fiber</th>
+                  <th scope="col">Weight (gram)</th>
+                  <th scope="col">Calorie</th>
+                  <th scope="col">Protein</th>
+                  <th scope="col">TotalFat</th>
+                  <th scope="col">Asam a-linoleat (18:2) (g)</th>
+                  <th scope="col">Carbohydrate (g)</th>
+                  <th scope="col">Fiber (g)</th>
+                  <th scope="col">Iron (mg)</th>
+                  <th scope="col">Calcium (mg)</th>
+                  <th scope="col">Zinc (mg)</th>
+
+                  <th scope="col">Fosfor (mg)</th>
+                  <th scope="col">Natrium/Sodium (mg)</th>
+                  <th scope="col">Kalium/ Potassium (mg))</th>
+                  <th scope="col">Magnesium (Mg)</th>
+                  <th scope="col">Tiamin/B1 (mg)</th>
+                  <th scope="col">Vit B12 (mikro)</th>
+
+                  <th scope="col">Vit C (mg)</th>
+                  <th scope="col">Vit D</th>
+                  <th scope="col">Folat (mikro)</th>
                   <th scope="col">Price</th>
+
                   <th scope="col">Source</th>
                   <th scope="col">Edit</th>
                   <th scope="col">Delete</th>
@@ -208,6 +238,7 @@ class App extends Component {
 
           return (
             <tr key={index}>
+              <td>{index + 1}</td>
               <td>{val.material}</td>
               <td>
                 <input
@@ -246,21 +277,7 @@ class App extends Component {
               <td>
                 {!val.material
                   ? null
-                  : `${(val.saturated * this.refs[`gramdetail${index}`].value)
-                      .toFixed(5)
-                      .replace(/[.]/g, ",")}`}
-              </td>
-              <td>
-                {!val.material
-                  ? null
-                  : `${(val.mufa * this.refs[`gramdetail${index}`].value)
-                      .toFixed(5)
-                      .replace(/[.]/g, ",")}`}
-              </td>
-              <td>
-                {!val.material
-                  ? null
-                  : `${(val.pufa * this.refs[`gramdetail${index}`].value)
+                  : `${(val.asam * this.refs[`gramdetail${index}`].value)
                       .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
@@ -278,6 +295,94 @@ class App extends Component {
                       .toFixed(5)
                       .replace(/[.]/g, ",")}`}
               </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.iron * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.calcium * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.zinc * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.fosfor * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.natrium * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.kalium * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.magnesium * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.tiamin * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.vitb12 * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.vit_c * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.vit_d * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+              <td>
+                {!val.material
+                  ? null
+                  : `${(val.folat * this.refs[`gramdetail${index}`].value)
+                      .toFixed(5)
+                      .replace(/[.]/g, ",")}`}
+              </td>
+
               <td>
                 {!val.material
                   ? null
@@ -323,6 +428,7 @@ class App extends Component {
 
         return (
           <tr key={index}>
+            <td>{index + 1}</td>
             <td>{val.material}</td>
             <td>
               <input
@@ -347,19 +453,51 @@ class App extends Component {
             <td>{`${(val.totalFat * val.gram)
               .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
-            <td>{`${(val.saturated * val.gram)
-              .toFixed(5)
-              .replace(/[.]/g, ",")}`}</td>
-            <td>{`${(val.mufa * val.gram)
-              .toFixed(5)
-              .replace(/[.]/g, ",")}`}</td>
-            <td>{`${(val.pufa * val.gram)
+            <td>{`${(val.asam * val.gram)
               .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.carbohydrat * val.gram)
               .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`${(val.fiber * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.iron * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.calcium * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+
+            <td>{`${(val.zinc * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.fosfor * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.natrium * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.kalium * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.magnesium * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.tiamin * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.vitb12 * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.vit_c * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+
+            <td>{`${(val.vit_d * val.gram)
+              .toFixed(5)
+              .replace(/[.]/g, ",")}`}</td>
+            <td>{`${(val.folat * val.gram)
               .toFixed(5)
               .replace(/[.]/g, ",")}`}</td>
             <td>{`Rp ${numeral(parseFloat(val.price * val.gram)).format(
@@ -442,40 +580,32 @@ class App extends Component {
       });
   };
 
-  // renderDataRecipe = (id) => {
-  //     if(id) {
-
-  //     }
-  // }
-
-  // <td>{`${parseFloat(data.calorie).toFixed(5)}`}</td>
-  // <td>{`${parseFloat(data.protein).toFixed(5)}`}</td>
-  // <td>{`${parseFloat(data.totalFat).toFixed(5)}`}</td>
-  // <td>{`${parseFloat(data.saturated).toFixed(5)}`}</td>
-  // <td>{`${parseFloat(data.mufa).toFixed(5)}`}</td>
-  // <td>{`${parseFloat(data.pufa).toFixed(5)}`}</td>
-  // <td>{`${parseFloat(data.carbohydrat).toFixed(5)}`}</td>
-  // <td>{`${parseFloat(data.fiber).toFixed(5)}`}</td>
-  // <td>{`${parseFloat(data.price).toFixed(5)}`}</td>
-
   renderTotalResDetail = () => {
-    console.log(
-      "***************************************************************8"
-    );
-    var totalweight = 0;
-    var totalcalorie = 0;
-    var totalprotein = 0;
-    var totalFat = 0;
-    var totalsaturated = 0;
-    var totalmufa = 0;
-    var totalpufa = 0;
-    var totalcarbohydrat = 0;
-    var totalfiber = 0;
-    var totalprice = 0;
+    let totalweight = 0;
+    let totalcalorie = 0;
+    let totalprotein = 0;
+    let totalFat = 0;
+    let asam = 0;
+    let carbohydrat = 0;
+    let totalfiber = 0;
+    let totaliron = 0;
+    let totalcalcium = 0;
+    let zinc = 0;
+    let fosfor = 0;
+    let natrium = 0;
+    let kalium = 0;
+    let magnesium = 0;
+    let tiamin = 0;
+    let vitb12 = 0;
+    let vit_c = 0;
+    let vit_d = 0;
+    let folat = 0;
+    let totalprice = 0;
 
     for (var i = 0; i < this.state.detailRecipeItem.length; i++) {
       console.log(i);
-      console.log(this.state.detailRecipeItem[i].gram);
+      console.log(this.state.detailRecipeItem[i]);
+      console.log(this.state.detailRecipeItem[i].calorie);
       var value;
       if (i === this.state.updatedvalue[0]) {
         value = this.state.updatedvalue[1];
@@ -487,39 +617,73 @@ class App extends Component {
       totalweight = parseFloat(totalweight) + parseFloat(value);
       totalcalorie =
         parseFloat(totalcalorie) +
-        parseFloat(this.state.detailRecipeItem[i].calorie * parseFloat(value));
+        parseFloat(this.state.detailRecipeItem[i].calorie + parseFloat(value));
       totalprotein =
         parseFloat(totalprotein) +
-        parseFloat(this.state.detailRecipeItem[i].protein * parseFloat(value));
+        parseFloat(this.state.detailRecipeItem[i].protein + parseFloat(value));
       totalFat =
         parseFloat(totalFat) +
-        parseFloat(this.state.detailRecipeItem[i].totalFat * parseFloat(value));
-      totalsaturated =
-        parseFloat(totalsaturated) +
+        parseFloat(this.state.detailRecipeItem[i].totalFat + parseFloat(value));
+      asam =
+        parseFloat(asam) +
+        parseFloat(this.state.detailRecipeItem[i].asam + parseFloat(value));
+      carbohydrat =
+        parseFloat(carbohydrat) +
         parseFloat(
-          this.state.detailRecipeItem[i].saturated * parseFloat(value)
-        );
-
-      totalmufa =
-        parseFloat(totalmufa) +
-        parseFloat(this.state.detailRecipeItem[i].mufa * parseFloat(value));
-      totalpufa =
-        parseFloat(totalpufa) +
-        parseFloat(this.state.detailRecipeItem[i].pufa * parseFloat(value));
-      totalcarbohydrat =
-        parseFloat(totalcarbohydrat) +
-        parseFloat(
-          this.state.detailRecipeItem[i].carbohydrat * parseFloat(value)
+          this.state.detailRecipeItem[i].carbohydrat + parseFloat(value)
         );
       totalfiber =
         parseFloat(totalfiber) +
-        parseFloat(this.state.detailRecipeItem[i].fiber * parseFloat(value));
+        parseFloat(this.state.detailRecipeItem[i].fiber + parseFloat(value));
+
+      totaliron =
+        parseFloat(totaliron) +
+        parseFloat(this.state.detailRecipeItem[i].iron + parseFloat(value));
+      totalcalcium =
+        parseFloat(totalcalcium) +
+        parseFloat(this.state.detailRecipeItem[i].calcium + parseFloat(value));
+      zinc =
+        parseFloat(zinc) +
+        parseFloat(this.state.detailRecipeItem[i].zinc + parseFloat(value));
+      fosfor =
+        parseFloat(fosfor) +
+        parseFloat(this.state.detailRecipeItem[i].fosfor + parseFloat(value));
+
+      natrium =
+        parseFloat(natrium) +
+        parseFloat(this.state.detailRecipeItem[i].natrium + parseFloat(value));
+      kalium =
+        parseFloat(kalium) +
+        parseFloat(this.state.detailRecipeItem[i].kalium + parseFloat(value));
+      magnesium =
+        parseFloat(magnesium) +
+        parseFloat(
+          this.state.detailRecipeItem[i].magnesium + parseFloat(value)
+        );
+      tiamin =
+        parseFloat(tiamin) +
+        parseFloat(this.state.detailRecipeItem[i].tiamin + parseFloat(value));
+
+      vitb12 =
+        parseFloat(vitb12) +
+        parseFloat(this.state.detailRecipeItem[i].vitb12 + parseFloat(value));
+      vit_c =
+        parseFloat(vit_c) +
+        parseFloat(this.state.detailRecipeItem[i].vit_c + parseFloat(value));
+      vit_d =
+        parseFloat(vit_d) +
+        parseFloat(this.state.detailRecipeItem[i].vit_d + parseFloat(value));
+      folat =
+        parseFloat(folat) +
+        parseFloat(this.state.detailRecipeItem[i].folat + parseFloat(value));
+
       totalprice =
         parseFloat(totalprice) +
-        parseFloat(this.state.detailRecipeItem[i].price * parseFloat(value));
+        parseFloat(this.state.detailRecipeItem[i].price + parseFloat(value));
     }
     return (
       <tr>
+        <td></td>
         <td className="font-weight-bold">Total : </td>
         <td className="font-weight-bold text-gray">
           {" "}
@@ -535,19 +699,50 @@ class App extends Component {
           {totalFat.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalsaturated.toFixed(5).replace(/[.]/g, ",")}
+          {asam.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
-          {totalmufa.toFixed(5).replace(/[.]/g, ",")}
-        </td>
-        <td className="font-weight-bold text-gray">
-          {totalpufa.toFixed(5).replace(/[.]/g, ",")}
-        </td>
-        <td className="font-weight-bold text-gray">
-          {totalcarbohydrat.toFixed(5).replace(/[.]/g, ",")}
+          {carbohydrat.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
           {totalfiber.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {totaliron.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {totalcalcium.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {zinc.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {fosfor.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+
+        <td className="font-weight-bold text-gray">
+          {natrium.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {kalium.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {magnesium.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {tiamin.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {vitb12.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {vit_c.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {vit_d.toFixed(5).replace(/[.]/g, ",")}
+        </td>
+        <td className="font-weight-bold text-gray">
+          {folat.toFixed(5).replace(/[.]/g, ",")}
         </td>
         <td className="font-weight-bold text-gray">
           {`Rp. ` + numeral(parseFloat(totalprice)).format("0,0.[00]")}
@@ -558,16 +753,26 @@ class App extends Component {
 
   renderTotal = () => {
     if (this.state.jumlahBuah > 0) {
-      var totalweight = 0;
-      var totalcalorie = 0;
-      var totalprotein = 0;
-      var totalFat = 0;
-      var totalsaturated = 0;
-      var totalmufa = 0;
-      var totalpufa = 0;
-      var totalcarbohydrat = 0;
-      var totalfiber = 0;
-      var totalprice = 0;
+      let totalweight = 0;
+      let totalcalorie = 0;
+      let totalprotein = 0;
+      let totalFat = 0;
+      let asam = 0;
+      let carbohydrat = 0;
+      let fiber = 0;
+      let iron = 0;
+      let calcium = 0;
+      let zinc = 0;
+      let fosfor = 0;
+      let natrium = 0;
+      let kalium = 0;
+      let magnesium = 0;
+      let tiamin = 0;
+      let vitb12 = 0;
+      let vit_c = 0;
+      let vit_d = 0;
+      let folat = 0;
+      let totalprice = 0;
 
       for (var i = 0; i < this.state.jumlahBuah; i++) {
         if (!this.refs[`namaBuah${i}`] || !this.refs[`gram${i}`].value) {
@@ -592,37 +797,101 @@ class App extends Component {
               this.state.dataAwal[this.refs[`namaBuah${i}`].value].totalFat *
                 parseFloat(this.refs[`gram${i}`].value)
             );
-          totalsaturated =
-            parseFloat(totalsaturated) +
-            parseFloat(
-              this.state.dataAwal[this.refs[`namaBuah${i}`].value].saturated *
-                parseFloat(this.refs[`gram${i}`].value)
-            );
 
-          totalmufa =
-            parseFloat(totalmufa) +
+          asam =
+            parseFloat(asam) +
             parseFloat(
-              this.state.dataAwal[this.refs[`namaBuah${i}`].value].mufa *
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].asam *
                 parseFloat(this.refs[`gram${i}`].value)
             );
-          totalpufa =
-            parseFloat(totalpufa) +
-            parseFloat(
-              this.state.dataAwal[this.refs[`namaBuah${i}`].value].pufa *
-                parseFloat(this.refs[`gram${i}`].value)
-            );
-          totalcarbohydrat =
-            parseFloat(totalcarbohydrat) +
+          carbohydrat =
+            parseFloat(carbohydrat) +
             parseFloat(
               this.state.dataAwal[this.refs[`namaBuah${i}`].value].carbohydrat *
                 parseFloat(this.refs[`gram${i}`].value)
             );
-          totalfiber =
-            parseFloat(totalfiber) +
+
+          fiber =
+            parseFloat(fiber) +
             parseFloat(
               this.state.dataAwal[this.refs[`namaBuah${i}`].value].fiber *
                 parseFloat(this.refs[`gram${i}`].value)
             );
+
+          iron =
+            parseFloat(iron) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].iron *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          calcium =
+            parseFloat(calcium) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].calcium *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          zinc =
+            parseFloat(zinc) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].zinc *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          fosfor =
+            parseFloat(fosfor) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].fosfor *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+
+          natrium =
+            parseFloat(natrium) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].natrium *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          kalium =
+            parseFloat(kalium) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].kalium *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          magnesium =
+            parseFloat(magnesium) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].magnesium *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          tiamin =
+            parseFloat(tiamin) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].tiamin *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          vitb12 =
+            parseFloat(vitb12) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].vitb12 *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          vit_c =
+            parseFloat(vit_c) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].vit_c *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          vit_d =
+            parseFloat(vit_d) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].vit_d *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+          folat =
+            parseFloat(folat) +
+            parseFloat(
+              this.state.dataAwal[this.refs[`namaBuah${i}`].value].folat *
+                parseFloat(this.refs[`gram${i}`].value)
+            );
+
           totalprice =
             parseFloat(totalprice) +
             parseFloat(
@@ -649,20 +918,52 @@ class App extends Component {
             {totalFat.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalsaturated.toFixed(5).replace(/[.]/g, ",")}
+            {asam.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalmufa.toFixed(5).replace(/[.]/g, ",")}
+            {carbohydrat.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalpufa.toFixed(5).replace(/[.]/g, ",")}
+            {fiber.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalcarbohydrat.toFixed(5).replace(/[.]/g, ",")}
+            {iron.toFixed(5).replace(/[.]/g, ",")}
           </td>
           <td className="font-weight-bold text-gray">
-            {totalfiber.toFixed(5).replace(/[.]/g, ",")}
+            {calcium.toFixed(5).replace(/[.]/g, ",")}
           </td>
+          <td className="font-weight-bold text-gray">
+            {zinc.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+          <td className="font-weight-bold text-gray">
+            {fosfor.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+
+          <td className="font-weight-bold text-gray">
+            {natrium.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+          <td className="font-weight-bold text-gray">
+            {kalium.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+          <td className="font-weight-bold text-gray">
+            {magnesium.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+          <td className="font-weight-bold text-gray">
+            {tiamin.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+          <td className="font-weight-bold text-gray">
+            {vitb12.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+          <td className="font-weight-bold text-gray">
+            {vit_c.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+          <td className="font-weight-bold text-gray">
+            {vit_d.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+          <td className="font-weight-bold text-gray">
+            {folat.toFixed(5).replace(/[.]/g, ",")}
+          </td>
+
           <td className="font-weight-bold text-gray">
             {`Rp. ` + numeral(parseFloat(totalprice)).format("0,0.[00]")}
           </td>
@@ -798,27 +1099,7 @@ class App extends Component {
               {!this.refs[`namaBuah${x}`]
                 ? null
                 : `${(
-                    this.state.dataAwal[this.refs[`namaBuah${x}`].value]
-                      .saturated * this.refs[`gram${x}`].value
-                  )
-                    .toFixed(5)
-                    .replace(/[.]/g, ",")}`}
-            </td>
-            <td>
-              {!this.refs[`namaBuah${x}`]
-                ? null
-                : `${(
-                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].mufa *
-                    this.refs[`gram${x}`].value
-                  )
-                    .toFixed(5)
-                    .replace(/[.]/g, ",")}`}
-            </td>
-            <td>
-              {!this.refs[`namaBuah${x}`]
-                ? null
-                : `${(
-                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].pufa *
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].asam *
                     this.refs[`gram${x}`].value
                   )
                     .toFixed(5)
@@ -847,6 +1128,128 @@ class App extends Component {
             <td>
               {!this.refs[`namaBuah${x}`]
                 ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].iron *
+                    this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value]
+                      .calcium * this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].zinc *
+                    this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value]
+                      .fosfor * this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value]
+                      .natrium * this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value]
+                      .kalium * this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value]
+                      .magnesium * this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value]
+                      .tiamin * this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value]
+                      .vitb12 * this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].vit_c *
+                    this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].vit_d *
+                    this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
+                : `${(
+                    this.state.dataAwal[this.refs[`namaBuah${x}`].value].folat *
+                    this.refs[`gram${x}`].value
+                  )
+                    .toFixed(5)
+                    .replace(/[.]/g, ",")}`}
+            </td>
+
+            <td>
+              {!this.refs[`namaBuah${x}`]
+                ? null
                 : `Rp. ${numeral(
                     parseFloat(
                       this.state.dataAwal[this.refs[`namaBuah${x}`].value]
@@ -857,13 +1260,6 @@ class App extends Component {
           </tr>
         );
       }
-
-      // if(!this.state.finishrender){
-
-      //   this.setState({
-      //     finishrender : true
-      //   })
-      // }
 
       return Arrjsx;
     }
