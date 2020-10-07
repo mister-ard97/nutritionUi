@@ -28,6 +28,8 @@ class App extends Component {
     detailRecipeItem: [],
     finishloaddetail: false,
     loaddetails: false,
+    editNamaRecipe: false,
+    newNameRecipe: "",
   };
 
   componentDidMount() {
@@ -54,6 +56,48 @@ class App extends Component {
         console.log(err);
       });
   }
+
+  changeNameRecipe = (id, title) => {
+    Axios.put(URL_API + `/recipe/editrecipe/${id}`, {
+      recipeName: title,
+    })
+      .then((results) => {
+        Axios.get(URL_API + "/recipe/getrecipedetail/" + id)
+          .then((resultsEdit) => {
+            Axios.get(URL_API + "/item/getItem")
+              .then((res) => {
+                this.setState({
+                  dataAwal: res.data,
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+
+            Axios.get(URL_API + "/recipe/getrecipe")
+              .then((res) => {
+                this.setState({
+                  data: res.data,
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+
+            this.setState({
+              titleRecipeSelected: title,
+              newNameRecipe: "",
+              editNamaRecipe: false,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   renderAddRecipe = () => {
     return (
@@ -149,7 +193,53 @@ class App extends Component {
             <div>
               <div className="row">
                 <div className="col-12">
-                  <h4>Nama Recipe: {this.state.titleRecipeSelected}</h4>
+                  <h4>
+                    Nama Recipe:{" "}
+                    {this.state.editNamaRecipe ? (
+                      <input
+                        type="text"
+                        value={this.state.newNameRecipe}
+                        onChange={(e) =>
+                          this.setState({ newNameRecipe: e.target.value })
+                        }
+                      />
+                    ) : (
+                      this.state.titleRecipeSelected
+                    )}
+                  </h4>
+                  {this.state.editNamaRecipe ? (
+                    <div>
+                      <button
+                        className="btn btn-success mr-3"
+                        onClick={() =>
+                          this.changeNameRecipe(
+                            this.state.idRecipeSelected,
+                            this.state.newNameRecipe
+                          )
+                        }
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => this.setState({ editNamaRecipe: false })}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      className="btn btn-info"
+                      onClick={() =>
+                        this.setState({
+                          editNamaRecipe: true,
+                          newNameRecipe: this.state.titleRecipeSelected,
+                        })
+                      }
+                    >
+                      Ubah nama recipe
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -1362,10 +1452,12 @@ class App extends Component {
     if (this.state.openModalRecipe) {
       this.setState({
         openModalRecipe: !this.state.openModalRecipe,
-        // idRecipeSelected: null,
+        idRecipeSelected: null,
         editRecipeDetail: null,
-        // titleRecipeSelected: null,
-        // detailRecipeItem: []
+        titleRecipeSelected: null,
+        detailRecipeItem: [],
+        newNameRecipe: "",
+        editNamaRecipe: false,
       });
     }
   };
