@@ -1470,7 +1470,7 @@ class App extends Component {
           <div className="container">
             <div className="row m-0">
               <div className="col-12 py-5">
-                <h4>Nutrition Calculation</h4>
+                <h4>Nutrition Calculations</h4>
               </div>
             </div>
           </div>
