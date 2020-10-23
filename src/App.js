@@ -704,72 +704,88 @@ class App extends Component {
           ? this.refs[`gramdetail${i}`].value
           : this.state.detailRecipeItem[i].gram;
       }
-      totalweight = parseFloat(totalweight) + parseFloat(value);
-      totalcalorie =
-        parseFloat(totalcalorie) +
-        parseFloat(this.state.detailRecipeItem[i].calorie + parseFloat(value));
-      totalprotein =
-        parseFloat(totalprotein) +
-        parseFloat(this.state.detailRecipeItem[i].protein + parseFloat(value));
-      totalFat =
-        parseFloat(totalFat) +
-        parseFloat(this.state.detailRecipeItem[i].totalFat + parseFloat(value));
-      asam =
-        parseFloat(asam) +
-        parseFloat(this.state.detailRecipeItem[i].asam + parseFloat(value));
-      carbohydrat =
-        parseFloat(carbohydrat) +
-        parseFloat(
-          this.state.detailRecipeItem[i].carbohydrat + parseFloat(value)
-        );
-      totalfiber =
-        parseFloat(totalfiber) +
-        parseFloat(this.state.detailRecipeItem[i].fiber + parseFloat(value));
+      totalweight += parseFloat(this.state.detailRecipeItem[i].gram);
+      totalcalorie += parseFloat(
+        this.state.detailRecipeItem[i].calorie *
+          this.state.detailRecipeItem[i].gram
+      );
 
-      totaliron =
-        parseFloat(totaliron) +
-        parseFloat(this.state.detailRecipeItem[i].iron + parseFloat(value));
-      totalcalcium =
-        parseFloat(totalcalcium) +
-        parseFloat(this.state.detailRecipeItem[i].calcium + parseFloat(value));
-      zinc =
-        parseFloat(zinc) +
-        parseFloat(this.state.detailRecipeItem[i].zinc + parseFloat(value));
-      fosfor =
-        parseFloat(fosfor) +
-        parseFloat(this.state.detailRecipeItem[i].fosfor + parseFloat(value));
+      totalprotein += parseFloat(
+        this.state.detailRecipeItem[i].protein *
+          this.state.detailRecipeItem[i].gram
+      );
+      totalFat += parseFloat(
+        this.state.detailRecipeItem[i].totalFat *
+          this.state.detailRecipeItem[i].gram
+      );
+      asam += parseFloat(
+        this.state.detailRecipeItem[i].asam *
+          this.state.detailRecipeItem[i].gram
+      );
+      carbohydrat += parseFloat(
+        this.state.detailRecipeItem[i].carbohydrat *
+          this.state.detailRecipeItem[i].gram
+      );
+      totalfiber += parseFloat(
+        this.state.detailRecipeItem[i].fiber *
+          this.state.detailRecipeItem[i].gram
+      );
 
-      natrium =
-        parseFloat(natrium) +
-        parseFloat(this.state.detailRecipeItem[i].natrium + parseFloat(value));
-      kalium =
-        parseFloat(kalium) +
-        parseFloat(this.state.detailRecipeItem[i].kalium + parseFloat(value));
-      magnesium =
-        parseFloat(magnesium) +
-        parseFloat(
-          this.state.detailRecipeItem[i].magnesium + parseFloat(value)
-        );
-      tiamin =
-        parseFloat(tiamin) +
-        parseFloat(this.state.detailRecipeItem[i].tiamin + parseFloat(value));
+      totaliron += parseFloat(
+        this.state.detailRecipeItem[i].iron *
+          this.state.detailRecipeItem[i].gram
+      );
+      totalcalcium += parseFloat(
+        this.state.detailRecipeItem[i].calcium *
+          this.state.detailRecipeItem[i].gram
+      );
+      zinc += parseFloat(
+        this.state.detailRecipeItem[i].zinc *
+          this.state.detailRecipeItem[i].gram
+      );
+      fosfor += parseFloat(
+        this.state.detailRecipeItem[i].fosfor *
+          this.state.detailRecipeItem[i].gram
+      );
 
-      vitb12 =
-        parseFloat(vitb12) +
-        parseFloat(this.state.detailRecipeItem[i].vitb12 + parseFloat(value));
-      vit_c =
-        parseFloat(vit_c) +
-        parseFloat(this.state.detailRecipeItem[i].vit_c + parseFloat(value));
-      vit_d =
-        parseFloat(vit_d) +
-        parseFloat(this.state.detailRecipeItem[i].vit_d + parseFloat(value));
-      folat =
-        parseFloat(folat) +
-        parseFloat(this.state.detailRecipeItem[i].folat + parseFloat(value));
+      natrium += parseFloat(
+        this.state.detailRecipeItem[i].natrium *
+          this.state.detailRecipeItem[i].gram
+      );
+      kalium += parseFloat(
+        this.state.detailRecipeItem[i].kalium *
+          this.state.detailRecipeItem[i].gram
+      );
+      magnesium += parseFloat(
+        this.state.detailRecipeItem[i].magnesium *
+          this.state.detailRecipeItem[i].gram
+      );
+      tiamin += parseFloat(
+        this.state.detailRecipeItem[i].tiamin *
+          this.state.detailRecipeItem[i].gram
+      );
 
-      totalprice =
-        parseFloat(totalprice) +
-        parseFloat(this.state.detailRecipeItem[i].price + parseFloat(value));
+      vitb12 += parseFloat(
+        this.state.detailRecipeItem[i].vitb12 *
+          this.state.detailRecipeItem[i].gram
+      );
+      vit_c += parseFloat(
+        this.state.detailRecipeItem[i].vit_c *
+          this.state.detailRecipeItem[i].gram
+      );
+      vit_d += parseFloat(
+        this.state.detailRecipeItem[i].vit_d *
+          this.state.detailRecipeItem[i].gram
+      );
+      folat += parseFloat(
+        this.state.detailRecipeItem[i].folat *
+          this.state.detailRecipeItem[i].gram
+      );
+
+      totalprice += parseFloat(
+        this.state.detailRecipeItem[i].price *
+          this.state.detailRecipeItem[i].gram
+      );
     }
     return (
       <tr>
